@@ -3,7 +3,13 @@
 var game = new Game();
 var view = new View(game, document.querySelector('.game'));
 
+
+var transitioning = false;
+
 document.onkeydown = function(event) {
+	if (transitioning) {
+		return;
+	}
 	event = event || window.event;
 	switch (event.keyCode) {
 		case 38:
@@ -19,4 +25,8 @@ document.onkeydown = function(event) {
 			game.move('right');
 			break;
 	}
+	transitioning = true;
+	setTimeout(function() {
+		transitioning = false;
+	}, 200);
 };

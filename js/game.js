@@ -11,15 +11,24 @@ var Board = function(grid) {
 
 Board._idEnum = 0;
 
-Board.prototype.count = function(value) {
+Board.prototype.flat = function(value) {
 	return this.grid.reduce(function(result, row, y) {
 		return row.reduce(function(result, cell, x) {
-			if (cell.val == value) {
-				result.push({x: x, y: y, cell: cell});
-			}
-			return result;
+			return result.concat([{
+				x:      x,
+				y:      y,
+				val:    cell.val,
+				id:     cell.id,
+				merged: cell.merged,
+			}]);
 		}, result);
 	}, []);
+};
+
+Board.prototype.count = function(value) {
+	return this.flat().filter(function(cell) {
+		return cell.val == value;
+	});
 };
 
 Board.prototype.equals = function(other) {
@@ -73,8 +82,9 @@ Board.prototype.shift = function() {
 			}
 			if (newRow[newRow.length-1].val == cell.val && !tuple[1]) {
 				return [newRow.slice(0, newRow.length-1).concat([{
-					val: cell.val + 1,
-					id:  ++Board._idEnum,
+					val:    cell.val + 1,
+					id:     ++Board._idEnum,
+					merged: [newRow[newRow.length-1].id, cell.id],
 				}]), true];
 			}
 			return [newRow.concat([cell]), false];

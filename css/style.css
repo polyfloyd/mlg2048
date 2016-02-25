@@ -1,0 +1,129 @@
+* {
+	margin: 0;
+}
+
+html,
+body {
+	height: 100%;
+}
+
+.game-board {
+	position: relative;
+
+	width: 800px;
+	height: 800px;
+}
+
+.game-board > .game-cell {
+	position: absolute;
+	width: 25%;
+	height: 25%;
+
+	font-size: 60px;
+	font-family: Comic Sans MS;
+	text-align: center;
+	vertical-align: middle;
+	z-index: 1;
+
+	opacity: 1;
+	transition:
+		left 0.4s,
+		top  0.4s,
+		opacity 0.4s;
+}
+
+.game-board > .game-cell:before {
+	width: 100%;
+	height: 100%;
+}
+
+.game-board > .game-cell.fade-out {
+	opacity: 0;
+	z-index: 0;
+}
+
+.game-cell-2 {
+	background-color: cyan;
+}
+
+.game-cell-2:before {
+	content: "2";
+}
+
+.game-cell-4 {
+	background-color: blue;
+}
+
+.game-cell-4:before {
+	content: "4";
+}
+
+.game-cell-8 {
+	background-color: purple;
+}
+
+.game-cell-8:before {
+	content: "8";
+}
+
+.game-cell-16 {
+	background-color: red;
+}
+
+.game-cell-16:before {
+	content: "16";
+}
+
+.game-cell-32 {
+	background-color: orange;
+}
+
+.game-cell-32:before {
+	content: "32";
+}
+
+.game-cell-64 {
+	background-color: yellow;
+}
+
+.game-cell-64:before {
+	content: "64";
+}
+
+.game-cell-128 {
+	background-color: green;
+}
+
+.game-cell-128:before {
+	content: "128";
+}
+
+.game-cell-256 {
+	background-color: darkgreen;
+}
+
+.game-cell-256:before {
+	content: "256";
+}
+
+.game-cell-512 {
+	background-color: brown;
+}
+
+.game-cell-512:before {
+	content: "512";
+}
+
+.game-cell-1024 {
+}
+
+.game-cell-1024:before {
+	content: "1024";
+}
+
+.game-cell-2048 {
+}
+
+.game-cell-2048:before {
+	content: "2048";
+}
