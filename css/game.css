@@ -1,0 +1,171 @@
+.game-board-container {
+	position: relative;
+}
+
+.game-board {
+	position: relative;
+	width: 100%;
+	border-radius: 12.5px;
+	background-color: rgba(0, 0, 0, 0.2);
+}
+
+.game-board > .ratio {
+	width: 100%;
+}
+
+.game-board > .game-board-bg {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+.game-board-bg {
+	padding: 12.5px;
+}
+
+.game-board-bg > span {
+	width: 25%;
+	height: 25%;
+	float: left;
+}
+
+.game-board-bg > span:before {
+	display: block;
+	width: calc(100% - 25px);
+	height: calc(100% - 25px);
+	margin: 12.5px;
+	border-radius: 12.5px;
+	content: "";
+	background-color: rgba(0, 0, 0, 0.2);
+}
+
+.game-board > .game-board-cells {
+	top: 12.5px;
+	left: 12.5px;
+	right: 12.5px;
+	bottom: 12.5px;
+	position: absolute;
+}
+
+.game-board-cells > .game-cell {
+	width: calc(25% - 25px);
+	height: calc(25% - 25px);
+	position: absolute;
+	z-index: 1;
+	opacity: 1;
+	transition:
+		left    0.2s,
+		top     0.2s,
+		opacity 0.2s;
+	padding: 12.5px;
+	border-radius: 12.5px;
+}
+
+.game-board-cells > .game-cell > span {
+	display: block;
+	width: 100%;
+	height: 100%;
+	border-radius: 12.5px;
+}
+
+.game-board-cells > .game-cell > span:before {
+	width: 100%;
+	height: 100%;
+	display: block;
+	font-size: 60px;
+	font-family: Comic Sans MS;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.game-board > .game-cell.fade-out {
+	z-index: 0;
+}
+
+.game-cell-2 > span {
+	background-color: cyan;
+}
+
+.game-cell-2 > span:before {
+	content: "2";
+}
+
+.game-cell-4 > span {
+	background-color: blue;
+}
+
+.game-cell-4 > span:before {
+	content: "4";
+}
+
+.game-cell-8 > span {
+	background-color: purple;
+}
+
+.game-cell-8 > span:before {
+	content: "8";
+}
+
+.game-cell-16 > span {
+	background-color: red;
+}
+
+.game-cell-16 > span:before {
+	content: "16";
+}
+
+.game-cell-32 > span {
+	background-color: orange;
+}
+
+.game-cell-32 > span:before {
+	content: "32";
+}
+
+.game-cell-64 > span {
+	background-color: yellow;
+}
+
+.game-cell-64 > span:before {
+	content: "64";
+}
+
+.game-cell-128 > span {
+	background-color: green;
+}
+
+.game-cell-128 > span:before {
+	content: "128";
+}
+
+.game-cell-256 > span {
+	background-color: darkgreen;
+}
+
+.game-cell-256 > span:before {
+	content: "256";
+}
+
+.game-cell-512 > span {
+	background-color: brown;
+}
+
+.game-cell-512 > span:before {
+	content: "420";
+}
+
+.game-cell-1024 > span {
+}
+
+.game-cell-1024 > span:before {
+	content: "1024";
+}
+
+.game-cell-2048 > span {
+}
+
+.game-cell-2048 > span:before {
+	content: "2048";
+}

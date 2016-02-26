@@ -54,7 +54,7 @@ View.prototype.update = function(targetBoard) {
 			var tmpl = document.querySelector('.tmpl-game-cell-'+(cell.val)).innerHTML;
 			$cellEl = elementFromHtml(tmpl);
 			$cellEl.id = 'cell-'+cell.id;
-			document.querySelector('.game-board').appendChild($cellEl);
+			document.querySelector('.game-board-cells').appendChild($cellEl);
 
 			(cell.merged || []).forEach(function(id) {
 				var $oldCellEl = document.getElementById('cell-'+id);

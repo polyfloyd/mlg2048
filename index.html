@@ -4,44 +4,80 @@
 	<title>MLG 2048</title>
 	<meta name="description" content="2048 BLAZE IT" />
 
+	<link rel="stylesheet" href="lib/normalizecss/normalize.css">
 	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/game.css">
 </head>
 <body>
-	<div class="game">
-		<script type="text/x-template" class="tmpl-game-cell-2">
-			<div class="game-cell game-cell-2"></div>
-		</script>
-		<script type="text/x-template" class="tmpl-game-cell-4">
-			<div class="game-cell game-cell-4"></div>
-		</script>
-		<script type="text/x-template" class="tmpl-game-cell-8">
-			<div class="game-cell game-cell-8"></div>
-		</script>
-		<script type="text/x-template" class="tmpl-game-cell-16">
-			<div class="game-cell game-cell-16"></div>
-		</script>
-		<script type="text/x-template" class="tmpl-game-cell-32">
-			<div class="game-cell game-cell-32"></div>
-		</script>
-		<script type="text/x-template" class="tmpl-game-cell-64">
-			<div class="game-cell game-cell-64"></div>
-		</script>
-		<script type="text/x-template" class="tmpl-game-cell-128">
-			<div class="game-cell game-cell-128"></div>
-		</script>
-		<script type="text/x-template" class="tmpl-game-cell-256">
-			<div class="game-cell game-cell-256"></div>
-		</script>
-		<script type="text/x-template" class="tmpl-game-cell-512">
-			<div class="game-cell game-cell-512"></div>
-		</script>
-		<script type="text/x-template" class="tmpl-game-cell-1024">
-			<div class="game-cell game-cell-1024"></div>
-		</script>
-		<script type="text/x-template" class="tmpl-game-cell-2048">
-			<div class="game-cell game-cell-2048"></div>
-		</script>
-		<div class="game-board"></div>
+	<div class="content">
+		<div class="logo">
+			<h1>MLG 2048</h1>
+		</div>
+
+		<div class="game">
+			<div class="game-board">
+				<script type="text/x-template" class="tmpl-game-cell-2">
+					<div class="game-cell game-cell-2"><span></span></div>
+				</script>
+				<script type="text/x-template" class="tmpl-game-cell-4">
+					<div class="game-cell game-cell-4"><span></span></div>
+				</script>
+				<script type="text/x-template" class="tmpl-game-cell-8">
+					<div class="game-cell game-cell-8"><span></span></div>
+				</script>
+				<script type="text/x-template" class="tmpl-game-cell-16">
+					<div class="game-cell game-cell-16"><span></span></div>
+				</script>
+				<script type="text/x-template" class="tmpl-game-cell-32">
+					<div class="game-cell game-cell-32"><span></span></div>
+				</script>
+				<script type="text/x-template" class="tmpl-game-cell-64">
+					<div class="game-cell game-cell-64"><span></span></div>
+				</script>
+				<script type="text/x-template" class="tmpl-game-cell-128">
+					<div class="game-cell game-cell-128"><span></span></div>
+				</script>
+				<script type="text/x-template" class="tmpl-game-cell-256">
+					<div class="game-cell game-cell-256"><span></span></div>
+				</script>
+				<script type="text/x-template" class="tmpl-game-cell-512">
+					<div class="game-cell game-cell-512"><span></span></div>
+				</script>
+				<script type="text/x-template" class="tmpl-game-cell-1024">
+					<div class="game-cell game-cell-1024"><span></span></div>
+				</script>
+				<script type="text/x-template" class="tmpl-game-cell-2048">
+					<div class="game-cell game-cell-2048"><span></span></div>
+				</script>
+				<img class="ratio" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAADUlEQVQI12NgYGBgAAAABQABXvMqOgAAAABJRU5ErkJggg==" />
+				<div class="game-board-bg">
+					<span></span>
+					<span></span>
+					<span></span>
+					<span></span>
+					<span></span>
+					<span></span>
+					<span></span>
+					<span></span>
+					<span></span>
+					<span></span>
+					<span></span>
+					<span></span>
+					<span></span>
+					<span></span>
+					<span></span>
+					<span></span>
+				</div>
+				<div class="game-board-cells"></div>
+			</div>
+		</div>
+
+		<div class="description">
+			<h1>MLG 2048</h1>
+			<p>
+				2048 BLAZE IT
+			</p>
+		</div>
 	</div>
 
 	<script type="text/javascript" src="lib/howlerjs/howler.js"></script>

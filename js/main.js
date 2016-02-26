@@ -6,22 +6,23 @@ var view = new View(game, document.querySelector('.game'));
 var transitioning = false;
 
 document.onkeydown = function(event) {
-	if (transitioning) {
-		return;
-	}
 	event = event || window.event;
 	switch (event.keyCode) {
 		case 38:
-			game.move('up');
+			if (!transitioning) game.move('up');
+			event.preventDefault();
 			break;
 		case 40:
-			game.move('down');
+			if (!transitioning) game.move('down');
+			event.preventDefault();
 			break;
 		case 37:
-			game.move('left');
+			if (!transitioning) game.move('left');
+			event.preventDefault();
 			break;
 		case 39:
-			game.move('right');
+			if (!transitioning) game.move('right');
+			event.preventDefault();
 			break;
 	}
 	transitioning = true;
