@@ -82,7 +82,7 @@ Board.prototype.shift = function() {
 			}
 			if (newRow[newRow.length-1].val == cell.val && !tuple[1]) {
 				return [newRow.slice(0, newRow.length-1).concat([{
-					val:    cell.val + 1,
+					val:    cell.val * 2,
 					id:     ++Board._idEnum,
 					merged: [newRow[newRow.length-1].id, cell.id],
 				}]), true];
@@ -96,14 +96,6 @@ Board.prototype.shift = function() {
 	}));
 };
 
-Board.prototype.toString = function() {
-	return this.grid.map(function(row) {
-		return row.map(function(cell) {
-			return cell.val;
-		}).join(' ');
-	}).join('\n');
-};
-
 
 var Game = function() {
 	this.board = new Board();
@@ -113,7 +105,7 @@ var Game = function() {
 	for (var i = 0; i < 2; i++) {
 		var empty = this.board.count(0);
 		var cell = empty[(Math.random() * empty.length) | 0];
-		this.board.grid[cell.y][cell.x] = {val: 1, id: ++Board._idEnum};
+		this.board.grid[cell.y][cell.x] = {val: 2, id: ++Board._idEnum};
 	}
 };
 
@@ -146,27 +138,49 @@ Game.prototype.move = function(dir) {
 		return;
 	}
 
+	var newId = ++Board._idEnum;
 	var empty = this.board.count(0);
 	var cell = empty[(Math.random() * empty.length) | 0];
-	this.board.grid[cell.y][cell.x] = {val: 1, id: ++Board._idEnum};
+	this.board.grid[cell.y][cell.x] = {val: 2, id: newId};
+	this.trigger('add', {
+		id: newId,
+		x:  cell.x,
+		y:  cell.y,
+	});
 
 	this.trigger('move', {
 		oldBoard: oldBoard,
 		newBoard: this.board,
+		diff: {
+			add: this.board.flat().filter(function(cell) {
+				return !oldBoard.flat().some(function(oldCell) {
+					return cell.id == oldCell.id;
+				});
+			}),
+			rem: oldBoard.flat().filter(function(cell) {
+				return !this.board.flat().some(function(newCell) {
+					return cell.id == newCell.id;
+				});
+			}.bind(this)),
+		},
 	});
 
 	if (this.board.count(0).length == 0) {
 		var movePossible = [0, 90, 180, 270].some(function(deg) {
-			return this.board.rotate(deg).shift().rotate(-deg).count(0).length > 0;
+			return this.board.rotate(deg).shift().count(0).length > 0;
 		}.bind(this));
 		if (!movePossible) {
 			this.trigger('lose');
 		}
 	}
-	var target = this.board.count(11);
+	var target = this.board.count(2048);
 	if (target.length) {
-		this.trigger('win', {
-			cells: target,
-		});
+		this.trigger('win');
 	}
+};
+
+Game.prototype.score = function() {
+	return this.board.flat().reduce(function(sum, cell) {
+		return sum + cell.val;
+	}, 0);
 };

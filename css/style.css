@@ -27,9 +27,9 @@ body {
 
 	opacity: 1;
 	transition:
-		left 0.4s,
-		top  0.4s,
-		opacity 0.4s;
+		left 0.2s,
+		top  0.2s,
+		opacity 0.2s;
 }
 
 .game-board > .game-cell:before {
@@ -38,7 +38,6 @@ body {
 }
 
 .game-board > .game-cell.fade-out {
-	opacity: 0;
 	z-index: 0;
 }
 
@@ -111,7 +110,7 @@ body {
 }
 
 .game-cell-512:before {
-	content: "512";
+	content: "420";
 }
 
 .game-cell-1024 {

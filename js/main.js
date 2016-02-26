@@ -3,7 +3,6 @@
 var game = new Game();
 var view = new View(game, document.querySelector('.game'));
 
-
 var transitioning = false;
 
 document.onkeydown = function(event) {
@@ -28,5 +27,5 @@ document.onkeydown = function(event) {
 	transitioning = true;
 	setTimeout(function() {
 		transitioning = false;
-	}, 200);
+	}, 100);
 };
