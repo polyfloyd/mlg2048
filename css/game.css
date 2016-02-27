@@ -6,7 +6,7 @@
 	position: relative;
 	width: 100%;
 	border-radius: 12.5px;
-	background-color: rgba(0, 0, 0, 0.2);
+	background-color: rgba(0, 0, 0, 0.4);
 }
 
 .game-board > .ratio {
@@ -63,14 +63,16 @@
 	border-radius: 12.5px;
 }
 
-.game-board-cells > .game-cell > span {
+.game-cell > span {
 	display: block;
-	width: 100%;
-	height: 100%;
+	width: calc(100% - 10px*2);
+	height: calc(100% - 10px*2);
 	border-radius: 12.5px;
+	border: 10px solid #000;
+	background-color: #fff;
 }
 
-.game-board-cells > .game-cell > span:before {
+.game-cell > span:before {
 	width: 100%;
 	height: 100%;
 	display: block;
@@ -80,12 +82,17 @@
 	vertical-align: middle;
 }
 
-.game-board > .game-cell.fade-out {
+.game-cell.fade-out {
 	z-index: 0;
 }
 
+.game-cell > span {
+	text-shadow: 0 0 0.2em #000;
+}
+
 .game-cell-2 > span {
-	background-color: cyan;
+	border-color: cyan;
+	color: cyan;
 }
 
 .game-cell-2 > span:before {
@@ -93,7 +100,8 @@
 }
 
 .game-cell-4 > span {
-	background-color: blue;
+	color: blue;
+	border-color: blue;
 }
 
 .game-cell-4 > span:before {
@@ -101,7 +109,8 @@
 }
 
 .game-cell-8 > span {
-	background-color: purple;
+	color: purple;
+	border-color: purple;
 }
 
 .game-cell-8 > span:before {
@@ -109,7 +118,8 @@
 }
 
 .game-cell-16 > span {
-	background-color: red;
+	color: red;
+	border-color: red;
 }
 
 .game-cell-16 > span:before {
@@ -117,7 +127,8 @@
 }
 
 .game-cell-32 > span {
-	background-color: orange;
+	color: orange;
+	border-color: orange;
 }
 
 .game-cell-32 > span:before {
@@ -125,7 +136,8 @@
 }
 
 .game-cell-64 > span {
-	background-color: yellow;
+	color: yellow;
+	border-color: yellow;
 }
 
 .game-cell-64 > span:before {
@@ -133,7 +145,8 @@
 }
 
 .game-cell-128 > span {
-	background-color: green;
+	color: green;
+	border-color: green;
 }
 
 .game-cell-128 > span:before {
@@ -141,7 +154,8 @@
 }
 
 .game-cell-256 > span {
-	background-color: darkgreen;
+	color: darkgreen;
+	border-color: darkgreen;
 }
 
 .game-cell-256 > span:before {
@@ -149,7 +163,7 @@
 }
 
 .game-cell-512 > span {
-	background-color: brown;
+	border-color: brown;
 }
 
 .game-cell-512 > span:before {
@@ -157,10 +171,40 @@
 }
 
 .game-cell-1024 > span {
+	animation:
+		border-eyecancer 0.8s infinite,
+		col-eyecancer 0.6s infinite;
 }
 
 .game-cell-1024 > span:before {
 	content: "1024";
+	animation: size-eyecancer 0.5s infinite;
+}
+
+@keyframes col-eyecancer {
+	0%   {color: #f00;}
+	12%  {color: #0ff;}
+	25%  {color: #00f;}
+	32%  {color: #ff0;}
+	75%  {color: #0f0;}
+	92%  {color: #fff;}
+	100% {color: #f0f;}
+}
+
+@keyframes size-eyecancer {
+	0%   {font-size: 30px}
+	50%  {font-size: 100px}
+	100% {font-size: 30px}
+}
+
+@keyframes border-eyecancer {
+	0%   {border-color: #f00;}
+	12%  {border-color: #ff0;}
+	25%  {border-color: #00f;}
+	32%  {border-color: #0ff;}
+	75%  {border-color: #0f0;}
+	92%  {border-color: #f0f;}
+	100% {border-color: #fff;}
 }
 
 .game-cell-2048 > span {

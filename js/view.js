@@ -6,12 +6,32 @@ function elementFromHtml(html) {
 	return $div.childNodes[1];
 }
 
+function shake(el, intensity) {
+	if (intensity <= 0) {
+		el.style.transform = '';
+		return;
+	}
+
+	function rand() {
+		return Math.random() * 2 - 1
+	}
+
+	var start = performance.now();
+	el.style.transform =
+		'translate('+(rand() * intensity * 2)+'vw, '+(rand() * intensity * 2)+'vw) '+
+		'rotate('+(rand() * intensity * 4)+'deg)';
+	requestAnimationFrame(function() {
+		shake(el, intensity - 1 * (performance.now() - start)/1000);
+	});
+}
+
 var audio = [
 	'hitmarker',
 	'momgetthecamera',
 	'ohbabyatriple',
 	'sad',
 	'wow',
+	'sanic_full',
 ].reduce(function(audio, file) {
 	audio[file] = new Howl({
 		urls: ['audio/'+file+'.mp3'],
@@ -33,13 +53,26 @@ var View = function(game, $el) {
 		} else if (event.diff.add.length >= 4) {
 			audio.momgetthecamera.play();
 		}
+		setTimeout(function() {
+			shake(document.querySelector('.game-board'), event.diff.add.length / 6);
+		}, 100);
+
 	}.bind(this));
 	this.game.on('lose', function(event) {
 		audio.sad.play();
 		console.log('You lost');
 	}.bind(this));
 	this.game.on('win', function(event) {
-		console.log('You won');
+		shake(document.querySelector('.game-board'), 3);
+	}.bind(this));
+
+	var glView = new ShaderView(
+		document.querySelector('.gl-background'),
+		document.querySelector('.background-shader').innerHTML
+	);
+	glView.on('pre-render', function(event) {
+		var levelUniform = event.gl.getUniformLocation(glView.prog, 'level');
+		event.gl.uniform1f(levelUniform, this.game.score() / 32);
 	}.bind(this));
 };
 
@@ -72,4 +105,5 @@ View.prototype.update = function(targetBoard) {
 		$cellEl.style.left = (cell.x / 4 * 100)+'%';
 		$cellEl.style.top  = (cell.y / 4 * 100)+'%';
 	});
+	document.querySelector('.game-score').innerText = this.game.score();
 };
