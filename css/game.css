@@ -13,16 +13,13 @@
 	width: 100%;
 }
 
-.game-board > .game-board-bg {
+.game-board-bg {
+	padding: 12.5px;
 	position: absolute;
 	top: 0;
 	left: 0;
 	right: 0;
 	bottom: 0;
-}
-
-.game-board-bg {
-	padding: 12.5px;
 }
 
 .game-board-bg > span {
@@ -41,7 +38,7 @@
 	background-color: rgba(0, 0, 0, 0.2);
 }
 
-.game-board > .game-board-cells {
+.game-board-cells {
 	top: 12.5px;
 	left: 12.5px;
 	right: 12.5px;
@@ -49,7 +46,7 @@
 	position: absolute;
 }
 
-.game-board-cells > .game-cell {
+.game-cell {
 	width: calc(25% - 25px);
 	height: calc(25% - 25px);
 	position: absolute;
@@ -69,147 +66,93 @@
 	height: calc(100% - 10px*2);
 	border-radius: 12.5px;
 	border: 10px solid #000;
-	background-color: #fff;
+	text-shadow: 0 0 0.2em #000;
+	animation:
+		bg-eyecancer 1.7s infinite,
+		border-eyecancer 1.3s infinite,
+		col-eyecancer 0.7s infinite;
 }
 
 .game-cell > span:before {
 	width: 100%;
 	height: 100%;
-	display: block;
+	display: inline-block;
 	font-size: 60px;
 	font-family: Comic Sans MS;
 	text-align: center;
-	vertical-align: middle;
 }
 
 .game-cell.fade-out {
 	z-index: 0;
 }
 
-.game-cell > span {
-	text-shadow: 0 0 0.2em #000;
-}
-
-.game-cell-2 > span {
-	border-color: cyan;
-	color: cyan;
-}
-
 .game-cell-2 > span:before {
 	content: "2";
-}
-
-.game-cell-4 > span {
-	color: blue;
-	border-color: blue;
 }
 
 .game-cell-4 > span:before {
 	content: "4";
 }
 
-.game-cell-8 > span {
-	color: purple;
-	border-color: purple;
-}
-
 .game-cell-8 > span:before {
 	content: "8";
-}
-
-.game-cell-16 > span {
-	color: red;
-	border-color: red;
 }
 
 .game-cell-16 > span:before {
 	content: "16";
 }
 
-.game-cell-32 > span {
-	color: orange;
-	border-color: orange;
-}
-
 .game-cell-32 > span:before {
 	content: "32";
-}
-
-.game-cell-64 > span {
-	color: yellow;
-	border-color: yellow;
 }
 
 .game-cell-64 > span:before {
 	content: "64";
 }
 
-.game-cell-128 > span {
-	color: green;
-	border-color: green;
-}
-
 .game-cell-128 > span:before {
 	content: "128";
-}
-
-.game-cell-256 > span {
-	color: darkgreen;
-	border-color: darkgreen;
 }
 
 .game-cell-256 > span:before {
 	content: "256";
 }
 
-.game-cell-512 > span {
-	border-color: brown;
-}
-
 .game-cell-512 > span:before {
 	content: "420";
 }
 
-.game-cell-1024 > span {
-	animation:
-		border-eyecancer 0.8s infinite,
-		col-eyecancer 0.6s infinite;
-}
-
 .game-cell-1024 > span:before {
 	content: "1024";
-	animation: size-eyecancer 0.5s infinite;
-}
-
-@keyframes col-eyecancer {
-	0%   {color: #f00;}
-	12%  {color: #0ff;}
-	25%  {color: #00f;}
-	32%  {color: #ff0;}
-	75%  {color: #0f0;}
-	92%  {color: #fff;}
-	100% {color: #f0f;}
-}
-
-@keyframes size-eyecancer {
-	0%   {font-size: 30px}
-	50%  {font-size: 100px}
-	100% {font-size: 30px}
-}
-
-@keyframes border-eyecancer {
-	0%   {border-color: #f00;}
-	12%  {border-color: #ff0;}
-	25%  {border-color: #00f;}
-	32%  {border-color: #0ff;}
-	75%  {border-color: #0f0;}
-	92%  {border-color: #f0f;}
-	100% {border-color: #fff;}
-}
-
-.game-cell-2048 > span {
 }
 
 .game-cell-2048 > span:before {
 	content: "2048";
+}
+
+@keyframes col-eyecancer {
+	0%   {color: #f00;}
+	20%  {color: #0ff;}
+	40%  {color: #00f;}
+	60%  {color: #ff0;}
+	80%  {color: #0f0;}
+	100% {color: #f0f;}
+}
+
+@keyframes bg-eyecancer {
+	0%   {background-color: #f00;}
+	20%  {background-color: #00f;}
+	40%  {background-color: #0ff;}
+	60%  {background-color: #ff0;}
+	80%  {background-color: #0f0;}
+	100% {background-color: #f0f;}
+}
+
+@keyframes border-eyecancer {
+	0%   {border-color: #f00;}
+	20%  {border-color: #ff0;}
+	40%  {border-color: #00f;}
+	60%  {border-color: #0ff;}
+	80%  {border-color: #0f0;}
+	100% {border-color: #f0f;}
 }

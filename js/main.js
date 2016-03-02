@@ -1,10 +1,9 @@
 'use strict';
 
 var game = new Game();
-var view = new View(game, document.querySelector('.game'));
+var view = new View(game);
 
 var transitioning = false;
-
 document.onkeydown = function(event) {
 	event = event || window.event;
 	switch (event.keyCode) {

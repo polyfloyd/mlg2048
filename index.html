@@ -1,11 +1,14 @@
 <!doctype html>
 <html>
 <head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
 	<title>MLG 2048</title>
 	<meta name="description" content="2048 BLAZE IT" />
 
 	<link rel="stylesheet" href="lib/normalizecss/normalize.css">
 	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/animations.css">
 	<link rel="stylesheet" href="css/game.css">
 </head>
 <body>
@@ -17,12 +20,13 @@
 
 		uniform float time;
 		uniform float level;
+		uniform float random;
 		uniform vec2 resolution;
 
 		void main(void) {
-			float center_motion = clamp(level * 0.2 - 1.0, 0.0, 1.0);
-			bool invert = level > 12.0;
-			float wave_speed = clamp(level, 0.0, 12.0) * 2.0 + 1.0;
+			float center_motion = clamp(level * 2.0 - 1.0, 0.0, 1.0);
+			bool invert = level > 0.8;
+			float wave_speed = clamp(level * 12.0, 0.0, 12.0) + 1.0;
 
 			vec2 center = vec2(
 				resolution.x * 0.5 + cos(time * 6.0) * resolution.x * 0.25 * center_motion,
@@ -32,7 +36,7 @@
 
 			float wave_scale = 12.0;
 
-			if (invert && mod(floor(time*2.0), 2.0) == 0.0) {
+			if (invert && mod(floor(time*12.0), 2.0) == 0.0 && random > 0.5) {
 				float col = cos(log(dist) * wave_scale - time * wave_speed) * 0.5 + 0.5;
 				gl_FragColor = vec4(col, col, col, 1.0);
 				return;
@@ -46,6 +50,7 @@
 			);
 		}
 	</script>
+
 	<div class="content">
 		<div class="logo">
 			<h1>MLG 2048</h1>
@@ -117,6 +122,8 @@
 			</p>
 		</div>
 	</div>
+
+	<div class="animations"></div>
 
 	<script type="text/javascript" src="lib/howlerjs/howler.js"></script>
 
