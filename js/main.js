@@ -29,3 +29,28 @@ document.onkeydown = function(event) {
 		transitioning = false;
 	}, 100);
 };
+
+var dragStart = null;
+document.addEventListener('mousedown', function(event) {
+	dragStart = {
+		x: event.clientX,
+		y: event.clientY,
+	};
+});
+document.addEventListener('mouseup', function(event) {
+	var dx = dragStart.x - event.clientX;
+	var dy = dragStart.y - event.clientY;
+	if (Math.abs(dx) > Math.abs(dy)) {
+		if (dx < -10) {
+			game.move('right');
+		} else if (dx > 10) {
+			game.move('left');
+		}
+	} else {
+		if (dy < -10) {
+			game.move('down');
+		} else if (dy > 10) {
+			game.move('up');
+		}
+	}
+});
