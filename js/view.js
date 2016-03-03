@@ -161,11 +161,7 @@ View.prototype.barageAirhorns = function() {
 		setTimeout(function() {
 			audio.airhorn.play();
 
-			var airhorn = elementFromHtml(
-				'<div class="anim-airhorn">'+
-					'<img src="img/airhorn.png" />'+
-				'</div>'
-			);
+			var airhorn = elementFromHtml(document.querySelector('.tmpl-anim-airhorn').innerHTML);
 			airhorn.style.top  = (Math.random() * 100)+'%';
 			airhorn.style.left = (Math.random() * 100)+'%';
 			var rotStart = Rand.uniform() * 60;
@@ -182,11 +178,7 @@ View.prototype.barageAirhorns = function() {
 View.prototype.barageSanic = function() {
 	audio.sanic.play();
 
-	var sanic = elementFromHtml(
-		'<div class="anim-sanic">'+
-			'<img src="img/sanic.png" />'+
-		'</div>'
-	);
+	var sanic = elementFromHtml(document.querySelector('.tmpl-anim-sanic').innerHTML);
 	var a = Math.random() * 0.8 + 0.1;
 	var b = Math.random() * 0.8 + 0.1;
 	var cont = document.querySelector('.animations');
