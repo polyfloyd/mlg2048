@@ -141,7 +141,7 @@ Game.prototype.move = function(dir) {
 	var newId = ++Board._idEnum;
 	var empty = this.board.count(0);
 	var cell = empty[(Math.random() * empty.length) | 0];
-	this.board.grid[cell.y][cell.x] = {val: 2, id: newId};
+	this.board.grid[cell.y][cell.x] = {val: [2, 4][Math.round(Math.random())], id: newId};
 
 	this.trigger('move', {
 		oldBoard: oldBoard,
