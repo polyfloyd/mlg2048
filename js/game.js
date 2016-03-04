@@ -176,6 +176,7 @@ Game.prototype.move = function(dir) {
 
 Game.prototype.score = function() {
 	return this.board.flat().reduce(function(sum, cell) {
-		return sum + cell.val;
+		if (cell.val <= 2) return sum;
+		return sum + cell.val * Math.log2(cell.val>>1);
 	}, 0);
 };
