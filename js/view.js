@@ -16,27 +16,21 @@ var Anim = {
 			});
 		});
 	},
+
+	shake: function(el, intensity) {
+		if (intensity <= 0) {
+			el.style.transform = '';
+			return;
+		}
+		var start = performance.now();
+		el.style.transform =
+			'translate('+(Rand.uniform() * intensity * 2)+'vw, '+(Rand.uniform() * intensity * 2)+'vw) '+
+			'rotate('+(Rand.uniform() * intensity * 4)+'deg)';
+		requestAnimationFrame(function() {
+			Anim.shake(el, intensity - 1 * (performance.now() - start)/1000);
+		});
+	},
 };
-
-function elementFromHtml(html) {
-	var div = document.createElement('div');
-	div.innerHTML = html;
-	return div.childNodes[1] || div.childNodes[0];
-}
-
-function shake(el, intensity) {
-	if (intensity <= 0) {
-		el.style.transform = '';
-		return;
-	}
-	var start = performance.now();
-	el.style.transform =
-		'translate('+(Rand.uniform() * intensity * 2)+'vw, '+(Rand.uniform() * intensity * 2)+'vw) '+
-		'rotate('+(Rand.uniform() * intensity * 4)+'deg)';
-	requestAnimationFrame(function() {
-		shake(el, intensity - 1 * (performance.now() - start)/1000);
-	});
-}
 
 var audio = [
 	'airhorn',
@@ -92,7 +86,7 @@ var View = function(game) {
 		});
 
 		setTimeout(function() {
-			shake(document.querySelector('.game-board'), event.diff.add.length / 6);
+			Anim.shake(document.querySelector('.game-board'), event.diff.add.length / 6);
 		}, 100);
 	}.bind(this));
 	this.game.on('lose', function(event) {
@@ -100,7 +94,7 @@ var View = function(game) {
 		console.log('You lost');
 	}.bind(this));
 	this.game.on('win', function(event) {
-		shake(document.querySelector('.game-board'), 3);
+		Anim.shake(document.querySelector('.game-board'), 3);
 	}.bind(this));
 
 	var glView = new ShaderView(

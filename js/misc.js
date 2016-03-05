@@ -12,6 +12,12 @@ if (!performance.now) {
 	}, 10);
 }
 
+function elementFromHtml(html) {
+	var div = document.createElement('div');
+	div.innerHTML = html;
+	return div.childNodes[1] || div.childNodes[0];
+}
+
 var Rand = {
 	uniform: function() {
 		return Math.random() * 2 - 1;
