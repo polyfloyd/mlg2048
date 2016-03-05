@@ -1,15 +1,5 @@
 'use strict';
 
-var Rand = {
-	uniform: function() {
-		return Math.random() * 2 - 1;
-	},
-
-	inv: function() {
-		return Math.random() > 0.5 ? 1 : -1;
-	},
-};
-
 var Anim = {
 	show: function(elem, duration) {
 		var container = document.querySelector('.animations');
