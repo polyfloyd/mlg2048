@@ -65,6 +65,14 @@ var View = function(game) {
 			this.barageSanic();
 		} else if (biggestNew == 512) {
 			audio.smokeweedeveryday.play();
+		} else if (biggestNew > 4) {
+			this.showGameText(Rand.pick([
+				'LMAO',
+				'I\'ll rekt u m8',
+				'XD',
+				'sweg',
+				'DAYUM',
+			]), 500);
 		}
 
 		event.diff.add.forEach(function(cell, i) {
