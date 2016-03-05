@@ -152,8 +152,8 @@ View.prototype.barageAirhorns = function() {
 			audio.airhorn.play();
 
 			var airhorn = elementFromHtml(document.querySelector('.tmpl-anim-airhorn').innerHTML);
-			airhorn.style.top  = (Math.random() * 100)+'%';
-			airhorn.style.left = (Math.random() * 100)+'%';
+			airhorn.style.top  = (Math.random() * 80 + 10)+'%';
+			airhorn.style.left = (Math.random() * 80 + 10)+'%';
 			var rotStart = Rand.uniform() * 60;
 			var rotEl = airhorn.querySelector('img');
 			rotEl.style.transform = 'rotate('+rotStart+'deg)';
@@ -168,6 +168,12 @@ View.prototype.barageAirhorns = function() {
 View.prototype.barageSanic = function() {
 	audio.sanic.play();
 
+	['such speed', '2fast4me', 'sanic hegehog', 'gtg fast'].map(function(text, i) {
+		setTimeout(function() {
+			this.showGameText(text, 500);
+		}.bind(this), 100 + i * 300);
+	}.bind(this));
+
 	var sanic = elementFromHtml(document.querySelector('.tmpl-anim-sanic').innerHTML);
 	var a = Math.random() * 0.8 + 0.1;
 	var b = Math.random() * 0.8 + 0.1;
@@ -181,4 +187,13 @@ View.prototype.barageSanic = function() {
 		sanic.style.left = 'calc(100% + 300px)';
 	});
 	Anim.show(sanic, 2000);
+};
+
+View.prototype.showGameText = function(text, duration) {
+	var el = elementFromHtml('<span class="anim-text text-game"></span>');
+	el.innerText = text;
+	el.style.left = (Math.random() * 80 + 10)+'%';
+	el.style.top  = (Math.random() * 80 + 10)+'%';
+	el.style.transform = 'rotate('+(Rand.uniform()*45)+'deg)';
+	Anim.show(el, duration);
 };
