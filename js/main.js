@@ -30,27 +30,9 @@ document.onkeydown = function(event) {
 	}, 100);
 };
 
-var dragStart = null;
-document.addEventListener('mousedown', function(event) {
-	dragStart = {
-		x: event.clientX,
-		y: event.clientY,
-	};
-});
-document.addEventListener('mouseup', function(event) {
-	var dx = dragStart.x - event.clientX;
-	var dy = dragStart.y - event.clientY;
-	if (Math.abs(dx) > Math.abs(dy)) {
-		if (dx < -10) {
-			game.move('right');
-		} else if (dx > 10) {
-			game.move('left');
-		}
-	} else {
-		if (dy < -10) {
-			game.move('down');
-		} else if (dy > 10) {
-			game.move('up');
-		}
-	}
+var hammertime = new Hammer(document, {});
+hammertime.get('swipe').set({direction: Hammer.DIRECTION_ALL});
+hammertime.on('swipe', function(event) {
+	var d = Math.min(Math.round((event.angle + 360*2) % 360 / 90), 3);
+	game.move(['right', 'down', 'left', 'up'][d]);
 });

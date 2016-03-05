@@ -4,3 +4,6 @@
 [submodule "lib/normalizecss"]
 	path = lib/normalizecss
 	url = https://github.com/necolas/normalize.css.git
+[submodule "lib/hammerjs"]
+	path = lib/hammerjs
+	url = https://github.com/hammerjs/hammer.js.git
