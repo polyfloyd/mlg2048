@@ -26,10 +26,12 @@ my $out_css = `cat @files_css | minify --type=css`;
 
 mkdir "release/";
 mkdir "release/audio/";
+mkdir "release/font/";
 mkdir "release/img/";
 
-system(<cp audio/* release/audio/>) and die;
-system(<cp img/*   release/img/>) and die;
+system(<cp -r audio/* release/audio/>) and die;
+system(<cp -r font/*  release/font/>) and die;
+system(<cp -r img/*   release/img/>) and die;
 
 open(my $fout_html, ">", "release/index.html") or die;
 print $fout_html $out_html;
