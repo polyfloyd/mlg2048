@@ -1,20 +1,21 @@
-.game-board-container {
-	position: relative;
-}
-
 .game-board {
 	position: relative;
-	width: 100%;
-	border-radius: 12.5px;
+	width: 60vmin;
+	height: 60vmin;
+	margin: 0 auto;
+	border-radius: 2vmin;
 	background-color: rgba(0, 0, 0, 0.4);
 }
 
-.game-board > .ratio {
-	width: 100%;
+@media (max-width: 991px) {
+	.game-board {
+		width: 80vmin;
+		height: 80vmin;
+	}
 }
 
 .game-board-bg {
-	padding: 12.5px;
+	padding: 1vmin;
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -30,25 +31,25 @@
 
 .game-board-bg > span:before {
 	display: block;
-	width: calc(100% - 25px);
-	height: calc(100% - 25px);
-	margin: 12.5px;
-	border-radius: 12.5px;
+	width: calc(100% - 2vmin);
+	height: calc(100% - 2vmin);
+	margin: 1vmin;
+	border-radius: 2vmin;
 	content: "";
 	background-color: rgba(0, 0, 0, 0.2);
 }
 
 .game-board-cells {
-	top: 12.5px;
-	left: 12.5px;
-	right: 12.5px;
-	bottom: 12.5px;
+	top:    1vmin;
+	left:   1vmin;
+	right:  1vmin;
+	bottom: 1vmin;
 	position: absolute;
 }
 
 .game-cell {
-	width: calc(25% - 25px);
-	height: calc(25% - 25px);
+	width: calc(25% - 2vmin);
+	height: calc(25% - 2vmin);
 	position: absolute;
 	z-index: 1;
 	opacity: 1;
@@ -56,17 +57,17 @@
 		left    0.2s,
 		top     0.2s,
 		opacity 0.2s;
-	padding: 12.5px;
-	border-radius: 12.5px;
+	padding: 1vmin;
+	border-radius: 2vmin;
 }
 
 .game-cell > span {
 	display: block;
-	width: calc(100% - 10px*2);
-	height: calc(100% - 10px*2);
-	border-radius: 12.5px;
-	border: 10px solid #000;
-	text-shadow: 0 0 0.2em #000;
+	width: calc(100% - 1vmin*2);
+	height: calc(100% - 1vmin*2);
+	border-radius: 2vmin;
+	border: 1vmin solid #000;
+	text-shadow: 0 0 0.3em #000;
 	animation:
 		bg-eyecancer 1.7s infinite,
 		border-eyecancer 1.3s infinite,
@@ -77,9 +78,15 @@
 	width: 100%;
 	height: 100%;
 	display: inline-block;
-	font-size: 60px;
+	font-size: 7vmin;
 	font-family: Comic Sans MS;
 	text-align: center;
+}
+
+@media (max-width: 991px) {
+	.game-cell > span:before {
+		font-size: 12vmin;
+	}
 }
 
 .game-cell.fade-out {
@@ -132,27 +139,30 @@
 
 @keyframes col-eyecancer {
 	0%   {color: #f00;}
-	20%  {color: #0ff;}
-	40%  {color: #00f;}
-	60%  {color: #ff0;}
-	80%  {color: #0f0;}
-	100% {color: #f0f;}
+	16%  {color: #0ff;}
+	32%  {color: #00f;}
+	48%  {color: #ff0;}
+	64%  {color: #0f0;}
+	80%  {color: #f0f;}
+	100%  {color: #f00;}
 }
 
 @keyframes bg-eyecancer {
 	0%   {background-color: #f00;}
-	20%  {background-color: #00f;}
-	40%  {background-color: #0ff;}
-	60%  {background-color: #ff0;}
-	80%  {background-color: #0f0;}
-	100% {background-color: #f0f;}
+	16%  {background-color: #00f;}
+	32%  {background-color: #0ff;}
+	48%  {background-color: #ff0;}
+	64%  {background-color: #0f0;}
+	80%  {background-color: #f0f;}
+	100% {background-color: #f00;}
 }
 
 @keyframes border-eyecancer {
 	0%   {border-color: #f00;}
-	20%  {border-color: #ff0;}
-	40%  {border-color: #00f;}
-	60%  {border-color: #0ff;}
-	80%  {border-color: #0f0;}
-	100% {border-color: #f0f;}
+	16%  {border-color: #ff0;}
+	32%  {border-color: #00f;}
+	48%  {border-color: #0ff;}
+	64%  {border-color: #0f0;}
+	80%  {border-color: #f0f;}
+	100% {border-color: #f00;}
 }
