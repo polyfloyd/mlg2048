@@ -30,9 +30,9 @@ document.onkeydown = function(event) {
 	}, 100);
 };
 
-var hammertime = new Hammer(document, {});
+var hammertime = new Hammer(document);
 hammertime.get('swipe').set({direction: Hammer.DIRECTION_ALL});
 hammertime.on('swipe', function(event) {
-	var d = Math.min(Math.round((event.angle + 360*2) % 360 / 90), 3);
+	var d = Math.round((event.angle + 360) % 360 / 90) % 4;
 	game.move(['right', 'down', 'left', 'up'][d]);
 });
