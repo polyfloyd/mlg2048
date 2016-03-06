@@ -11,18 +11,22 @@ var transitioning = false;
 document.onkeydown = function(event) {
 	event = event || window.event;
 	switch (event.keyCode) {
+		case 87:
 		case 38:
 			if (!transitioning) game.move('up');
 			event.preventDefault();
 			break;
+		case 83:
 		case 40:
 			if (!transitioning) game.move('down');
 			event.preventDefault();
 			break;
+		case 65:
 		case 37:
 			if (!transitioning) game.move('left');
 			event.preventDefault();
 			break;
+		case 68:
 		case 39:
 			if (!transitioning) game.move('right');
 			event.preventDefault();
