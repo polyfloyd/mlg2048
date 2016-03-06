@@ -1,23 +1,19 @@
 .animations {
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	z-index: 100;
-	overflow: hidden;
+	position: relative;
 }
 
-.animations > * {
+.animations .anim {
 	position: absolute;
 	transform: translate(-50%, -50%);
+	pointer-events: none;
+	z-index: 100;
 }
 
-.animations .anim-text {
+.anim.anim-text {
 	white-space: nowrap;
 }
 
-.animations .anim-text.text-game {
+.anim.anim-text.text-game {
 	color: #fff;
 	font-family: pricedown;
 	font-size: 60px;
@@ -32,15 +28,15 @@
 		-0.05em -0.05em 0 #000;
 }
 
-.animations .anim-airhorn {
+.anim.anim-airhorn {
 	animation: anim-pulse 1.5s 1;
 }
 
-.animations .anim-airhorn img {
+.anim.anim-airhorn img {
 	transition: transform 1.5s;
 }
 
-.animations .anim-sanic {
+.anim.anim-sanic {
 	animation: anim-wiggle 0.2s infinite;
 	transition:
 		top    2s linear,

@@ -192,7 +192,7 @@ View.prototype.barageSanic = function() {
 };
 
 View.prototype.showGameText = function(text, duration) {
-	var el = elementFromHtml('<span class="anim-text text-game"></span>');
+	var el = elementFromHtml('<span class="anim anim-text text-game"></span>');
 	el.innerText = text;
 	el.style.left = (Math.random() * 80 + 10)+'%';
 	el.style.top  = (Math.random() * 80 + 10)+'%';

@@ -30,7 +30,7 @@ document.onkeydown = function(event) {
 	}, 100);
 };
 
-var hammertime = new Hammer(document);
+var hammertime = new Hammer(document.querySelector('.game-board'));
 hammertime.get('swipe').set({direction: Hammer.DIRECTION_ALL});
 hammertime.on('swipe', function(event) {
 	var d = Math.round((event.angle + 360) % 360 / 90) % 4;
