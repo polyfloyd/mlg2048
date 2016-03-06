@@ -143,7 +143,7 @@ View.prototype.update = function(targetBoard) {
 		cellEl.style.left = (cell.x / 4 * 100)+'%';
 		cellEl.style.top  = (cell.y / 4 * 100)+'%';
 	});
-	document.querySelector('.game-score').innerText = this.game.score();
+	document.querySelector('.game-score').innerHTML = this.game.score();
 };
 
 View.prototype.barageAirhorns = function() {
@@ -192,7 +192,7 @@ View.prototype.barageSanic = function() {
 
 View.prototype.showGameText = function(text, duration) {
 	var el = elementFromHtml('<span class="anim anim-text text-game"></span>');
-	el.innerText = text;
+	el.innerHTML = text;
 	el.style.left = (Math.random() * 80 + 10)+'%';
 	el.style.top  = (Math.random() * 80 + 10)+'%';
 	el.style.transform = 'rotate('+(Rand.uniform()*45)+'deg)';
