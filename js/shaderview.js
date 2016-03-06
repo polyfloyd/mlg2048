@@ -1,6 +1,5 @@
 'use strict';
 
-
 function compileProgram(gl, shaderSources) {
 	var shaders = Object.keys(shaderSources).map(function(type) {
 		var shader = gl.createShader(gl[type]);
@@ -32,16 +31,13 @@ function compileProgram(gl, shaderSources) {
 var ShaderView = function(canvas, glsl) {
 	this.canvas = canvas;
 	this.eventListeners = {};
+	this.uniforms = {};
+	this.gl = this.getGL();
 
 	this.resize();
 	window.addEventListener('resize', this.resize.bind(this));
 
-	var gl = this.gl();
-	if (!gl) {
-		return;
-	}
-
-	this.prog = compileProgram(gl, {
+	this.prog = compileProgram(this.gl, {
 		VERTEX_SHADER:
 			'attribute vec3 vert;'+
 			'void main(void) {'+
@@ -49,8 +45,8 @@ var ShaderView = function(canvas, glsl) {
 			'}',
 		FRAGMENT_SHADER: glsl,
 	});
-	gl.useProgram(this.prog);
-	gl.enableVertexAttribArray(gl.getAttribLocation(this.prog, 'vert'));
+	this.gl.useProgram(this.prog);
+	this.gl.enableVertexAttribArray(this.gl.getAttribLocation(this.prog, 'vert'));
 
 	var vertices = [
 		-1.0, -1.0,  0.0,
@@ -58,11 +54,12 @@ var ShaderView = function(canvas, glsl) {
 		-1.0,  1.0,  0.0,
 		 1.0,  1.0,  0.0,
 	];
-	this.square = gl.createBuffer();
+	this.square = this.gl.createBuffer();
 	this.square.itemSize = 3;
 	this.square.numItems = 4;
-	gl.bindBuffer(gl.ARRAY_BUFFER, this.square);
-	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+	this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.square);
+	this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(vertices), this.gl.STATIC_DRAW);
+	this.gl.vertexAttribPointer(this.gl.getAttribLocation(this.prog, 'vert'), this.square.itemSize, this.gl.FLOAT, false, 0, 0);
 
 	var self = this;
 	(function loop() {
@@ -74,40 +71,30 @@ var ShaderView = function(canvas, glsl) {
 };
 
 ShaderView.prototype.resize = function() {
-	var gl = this.gl();
-	if (!gl) {
-		return;
-	}
 	var w = this.canvas.clientWidth, h = this.canvas.clientHeight;
 	this.canvas.width = w;
 	this.canvas.height = h;
-	gl.viewport(0, 0, w, h);
+	this.gl.viewport(0, 0, w, h);
 	this.trigger('resize', {width: w, height: h});
 };
 
-ShaderView.prototype.gl = function() {
+ShaderView.prototype.uniform = function(name) {
+	return this.uniforms[name] || (this.uniforms[name] = this.gl.getUniformLocation(this.prog, name));
+};
+
+ShaderView.prototype.getGL = function() {
 	try {
 		return this.canvas.getContext('webgl');
 	} catch (err) {
-		try {
-			return this.canvas.getContext('experimental-webgl');
-		} catch (err) {
-			return null;
-		}
+		return this.canvas.getContext('experimental-webgl');
 	}
 };
 
 ShaderView.prototype.render = function() {
-	var gl = this.gl();
-	this.trigger('pre-render', {gl: gl});
-	var resolutionUniform = gl.getUniformLocation(this.prog, 'resolution');
-	gl.uniform2f(resolutionUniform, this.canvas.width, this.canvas.height);
-	var timeUniform = gl.getUniformLocation(this.prog, 'time');
-	gl.uniform1f(timeUniform, performance.now() / 1000);
-
-	gl.bindBuffer(gl.ARRAY_BUFFER, this.square);
-	gl.vertexAttribPointer(gl.getAttribLocation(this.prog, 'vert'), this.square.itemSize, gl.FLOAT, false, 0, 0);
-	gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.square.numItems);
+	this.trigger('pre-render');
+	this.gl.uniform2f(this.uniform('resolution'), this.canvas.width, this.canvas.height);
+	this.gl.uniform1f(this.uniform('time'), performance.now() / 1000);
+	this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, this.square.numItems);
 };
 
 ShaderView.prototype.on = function(eventName, handler) {

@@ -14,13 +14,14 @@ Board._idEnum = 0;
 Board.prototype.flat = function(value) {
 	return this.grid.reduce(function(result, row, y) {
 		return row.reduce(function(result, cell, x) {
-			return result.concat([{
+			result.push({
 				x:      x,
 				y:      y,
 				val:    cell.val,
 				id:     cell.id,
 				merged: cell.merged,
-			}]);
+			});
+			return result;
 		}, result);
 	}, []);
 };

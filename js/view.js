@@ -104,17 +104,19 @@ var View = function(game) {
 		Anim.shake(document.querySelector('.game-board'), 3);
 	}.bind(this));
 
-	var glView = new ShaderView(
-		document.querySelector('.gl-background'),
-		document.querySelector('.background-shader').innerHTML
-	);
-	glView.on('pre-render', function(event) {
-		this.scoreLerp += Math.sqrt(Math.max(this.game.score() - this.scoreLerp, 0) / 80);
-		var levelUniform = event.gl.getUniformLocation(glView.prog, 'level');
-		event.gl.uniform1f(levelUniform, this.scoreLerp / 512);
-		var randomUniform = event.gl.getUniformLocation(glView.prog, 'random');
-		event.gl.uniform1f(randomUniform, Math.random());
-	}.bind(this));
+	try {
+		var glView = new ShaderView(
+			document.querySelector('.gl-background'),
+			document.querySelector('.background-shader').innerHTML
+		);
+		glView.on('pre-render', function(event) {
+			this.scoreLerp += Math.sqrt(Math.max(this.game.score() - this.scoreLerp, 0) / 80);
+			glView.gl.uniform1f(glView.uniform('level'), this.scoreLerp / 512);
+			glView.gl.uniform1f(glView.uniform('random'), Math.random());
+		}.bind(this));
+	} catch (err) {
+		// Meh
+	}
 };
 
 View.prototype.update = function(targetBoard) {
