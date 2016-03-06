@@ -81,7 +81,7 @@ var View = function(game) {
 			}
 			var cellEl = document.getElementById('cell-'+cell.id);
 			setTimeout(function() {
-				var mark = elementFromHtml('<img src="img/hitmarker.svg" />');
+				var mark = elementFromHtml(document.querySelector('.tmpl-anim-hitmarker').innerHTML);
 				var rect = cellEl.getBoundingClientRect();
 				var hx = (rect.right - rect.left) / 2;
 				var hy = (rect.bottom - rect.top) / 2;
@@ -157,7 +157,7 @@ View.prototype.barageAirhorns = function() {
 			airhorn.style.top  = (Math.random() * 80 + 10)+'%';
 			airhorn.style.left = (Math.random() * 80 + 10)+'%';
 			var rotStart = Rand.uniform() * 60;
-			var rotEl = airhorn.querySelector('img');
+			var rotEl = airhorn.querySelector('.anim-image');
 			rotEl.style.transform = 'rotate('+rotStart+'deg)';
 			Anim.runTransition(function() {
 				rotEl.style.transform = 'rotate('+(rotStart + Rand.inv() * (30 + 240 * Math.random()))+'deg)';
@@ -181,7 +181,7 @@ View.prototype.barageSanic = function() {
 	var b = Math.random() * 0.8 + 0.1;
 	var cont = document.querySelector('.animations');
 	var angrad = Math.atan2(cont.clientWidth, cont.clientHeight * (a - b)) - Math.PI/2;
-	sanic.querySelector('img').style.transform = 'rotate('+angrad+'rad)';
+	sanic.querySelector('.anim-image').style.transform = 'rotate('+angrad+'rad)';
 	sanic.style.left = '-300px';
 	sanic.style.top  = (a * 100)+'%';
 	Anim.runTransition(function() {
