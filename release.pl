@@ -7,6 +7,12 @@ system("which minify > /dev/null 2>&1") and die "minify is not installed.
 Please install it using `go get github.com/tdewolff/minify/cmd/minify`.
 ";
 
+my $version_git  = `git describe --always --dirty`;
+my $version_date = `date --date="@\$(git show -s --format='%ct' HEAD)" '+%Y-%m-%d'`;
+chomp($version_git);
+chomp($version_date);
+my $version = $version_git." (".$version_date.")";
+
 open(my $fin, "<", "index.html") or die;
 my $html = join('', <$fin>);
 close $fin;
@@ -19,6 +25,7 @@ $out_html =~ s/<link rel="stylesheet" href=".+" \/>//g;
 $out_html =~ s/<script type="text\/javascript" src=".+"><\/script>//g;
 $out_html =~ s/<!-- CSS -->/<link rel="stylesheet" href="app.css" \/>/;
 $out_html =~ s/<!-- JS -->/<script type="text\/javascript" src="app.js"><\/script>/;
+$out_html =~ s/<!-- VERSION -->/$version/;
 $out_html = `echo '$out_html' | minify --type=html`;
 
 my $out_js  = `cat @files_js  | minify --type=js`;
@@ -29,6 +36,7 @@ mkdir "release/audio/";
 mkdir "release/font/";
 mkdir "release/img/";
 
+system(<cp privacy.txt release/>) and die;
 system(<cp -r audio/* release/audio/>) and die;
 system(<cp -r font/*  release/font/>) and die;
 system(<cp -r img/*   release/img/>) and die;
