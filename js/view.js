@@ -99,7 +99,6 @@ var View = function(game) {
 	}.bind(this));
 	this.game.on('lose', function(event) {
 		audio.sad.play();
-		console.log('You lost');
 	}.bind(this));
 	this.game.on('win', function(event) {
 		Anim.shake(document.querySelector('.game-board'), 3);

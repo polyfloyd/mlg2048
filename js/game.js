@@ -165,7 +165,12 @@ Game.prototype.move = function(dir) {
 			return this.board.rotate(deg).shift().count(0).length > 0;
 		}.bind(this));
 		if (!movePossible) {
-			this.trigger('lose');
+			this.trigger('lose', {
+				score:       this.score(),
+				highestCell: this.board.flat().reduce(function(biggest, cell) {
+					return Math.max(cell.val, biggest);
+				}, 0),
+			});
 		}
 	}
 	var target = this.board.count(2048);

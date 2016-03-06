@@ -3,6 +3,10 @@
 var game = new Game();
 var view = new View(game);
 
+game.on('lose', function(event) {
+	_paq.push(['trackEvent', 'GameOver', 'score: '+event.score+', highest: '+event.highestCell]);
+});
+
 var transitioning = false;
 document.onkeydown = function(event) {
 	event = event || window.event;
