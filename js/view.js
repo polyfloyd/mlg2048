@@ -54,6 +54,7 @@ var View = function(game) {
 
 	this.update(game.board);
 	this.game.on('move', function(event) {
+		document.querySelector('.game').classList.remove('game-begin');
 		this.update(event.newBoard);
 
 		var biggestNew = event.diff.add.reduce(function(biggest, cell) {
