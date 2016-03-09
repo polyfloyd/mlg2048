@@ -9,7 +9,9 @@ body {
 	width: 100%;
 	height: 100%;
 	position: fixed;
-	background-color: #f2ba00; /* Fallback */
+	background-image: url('../img/background-fallback.jpg');
+	background-size: cover;
+	background-position: center;
 }
 
 .content {

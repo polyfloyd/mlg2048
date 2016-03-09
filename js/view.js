@@ -116,7 +116,7 @@ var View = function(game) {
 			glView.gl.uniform1f(glView.uniform('random'), Math.random());
 		}.bind(this));
 	} catch (err) {
-		// Meh
+		console.error(err);
 	}
 };
 

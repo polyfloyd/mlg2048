@@ -83,11 +83,16 @@ ShaderView.prototype.uniform = function(name) {
 };
 
 ShaderView.prototype.getGL = function() {
+	var gl;
 	try {
-		return this.canvas.getContext('webgl');
+		gl = this.canvas.getContext('webgl');
 	} catch (err) {
-		return this.canvas.getContext('experimental-webgl');
+		gl = this.canvas.getContext('experimental-webgl');
 	}
+	if (!gl) {
+		throw new Error('Unable to get WebGL context');
+	}
+	return gl;
 };
 
 ShaderView.prototype.render = function() {
