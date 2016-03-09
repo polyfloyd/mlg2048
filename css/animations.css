@@ -15,22 +15,8 @@
 }
 
 .anim-text {
-	white-space: nowrap;
-}
-
-.anim.anim-text.text-game {
-	color: #fff;
-	font-family: pricedown;
 	font-size: 60px;
-	text-shadow:
-		 0.05em  0     0 #000,
-		 0       0.05em 0 #000,
-		-0.05em  0     0 #000,
-		 0      -0.05em 0 #000,
-		 0.05em  0.05em 0 #000,
-		 0.05em -0.05em 0 #000,
-		-0.05em  0.05em 0 #000,
-		-0.05em -0.05em 0 #000;
+	white-space: nowrap;
 }
 
 .anim.anim-hitmarker.anim-image {
