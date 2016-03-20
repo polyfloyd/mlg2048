@@ -26,9 +26,12 @@ h3,
 		-0.05em -0.05em 0 #000;
 }
 
-p {
+section > * {
 	color: #fff;
 	text-shadow: 0 0 0.3em #000;
+}
+
+p {
 	font-size: 18px;
 }
 
@@ -76,10 +79,19 @@ p {
 	padding: 0.6em;
 }
 
-.description p {
-	background-color: rgba(0, 0, 0, 0.2);
+.description section {
+	margin: 1em 0;
 	padding: 0.4em;
 	border-radius: 0.4em;
+	background-color: rgba(0, 0, 0, 0.2);
+}
+
+.description section > *:first-child {
+	margin-top: 0;
+}
+
+.description section > *:last-child {
+	margin-bottom: 0;
 }
 
 footer {
