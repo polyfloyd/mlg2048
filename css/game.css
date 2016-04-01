@@ -4,6 +4,20 @@
 	display: flex;
 }
 
+.game-menu .fb-share-button,
+.game-menu .twitter-share-button {
+	margin: 6px 6px 0 0;
+}
+
+.game-menu .fb-share-button {
+	transform: scale(1.4);
+	padding: 5px 14px;
+}
+
+.game-menu .fb-share-button > * {
+	display: block;
+}
+
 .game-newgame {
 	font-size: 0.7em;
 	flex-shrink: 0;
