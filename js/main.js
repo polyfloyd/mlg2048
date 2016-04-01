@@ -44,3 +44,7 @@ hammertime.on('swipe', function(event) {
 	var d = Math.round((event.angle + 360) % 360 / 90) % 4;
 	game.move(['right', 'down', 'left', 'up'][d]);
 });
+
+document.querySelector('.epilepsy-warning').addEventListener('click', function(event) {
+	event.target.classList.add('hide');
+});

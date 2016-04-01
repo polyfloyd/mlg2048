@@ -98,3 +98,24 @@ footer {
 	width: 100%;
 	text-align: center;
 }
+
+.epilepsy-warning {
+	margin: 0;
+	padding: 0.3em;
+	position: fixed;
+	left: 10px;
+	bottom: 10px;
+	font-size: 16px;
+	text-align: center;
+	z-index: 10000;
+	border: 0.3em solid #000;
+	font-family: arial;
+	font-weight: bold;
+	background-color: #fff;
+	cursor: pointer;
+	transition: bottom 0.4s;
+}
+
+.epilepsy-warning.hide {
+	bottom: calc(-4em);
+}
