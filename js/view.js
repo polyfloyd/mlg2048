@@ -113,7 +113,6 @@ var View = function(game) {
 		glView.on('pre-render', function(event) {
 			this.scoreLerp += Math.sqrt(Math.max(this.game.score() - this.scoreLerp, 0) / 80);
 			glView.gl.uniform1f(glView.uniform('level'), this.scoreLerp / 512);
-			glView.gl.uniform1f(glView.uniform('random'), Math.random());
 		}.bind(this));
 	} catch (err) {
 		console.error(err);

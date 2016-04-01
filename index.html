@@ -36,7 +36,6 @@
 
 		uniform float time;
 		uniform float level;
-		uniform float random;
 		uniform vec2 resolution;
 
 		float wave_speed    = clamp(level * 12.0, 0.0, 12.0) + 1.0;
@@ -57,7 +56,7 @@
 			float flip = cos(wave - time * wave_speed) * 0.5 + 0.5;
 			vec3 flip_color = vec3(flip, flip, flip);
 
-			gl_FragColor = vec4(mix(normal_color, flip_color, step(0.8, level) * step(0.5, random)), 1.0);
+			gl_FragColor = vec4(mix(normal_color, flip_color, step(0.8, level) * (cos(time * 8.0) * 0.5 + 0.5)), 1.0);
 		}
 	</script>
 
