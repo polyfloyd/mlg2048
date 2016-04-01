@@ -45,6 +45,7 @@ p {
 	border-radius: 0.4em;
 	color: #5e3700;
 	transition: box-shadow 0.2s;
+	white-space: nowrap;
 }
 
 .button:hover {

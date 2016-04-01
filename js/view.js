@@ -54,7 +54,7 @@ var View = function(game) {
 
 	this.update(game.board);
 	this.game.on('move', function(event) {
-		document.querySelector('.game').classList.remove('game-begin');
+		document.querySelector('.game').classList.remove('game-state-begin');
 		this.update(event.newBoard);
 
 		var biggestNew = event.diff.add.reduce(function(biggest, cell) {
@@ -100,6 +100,7 @@ var View = function(game) {
 	}.bind(this));
 	this.game.on('lose', function(event) {
 		audio.sad.play();
+		document.querySelector('.game').classList.add('game-state-lose');
 	}.bind(this));
 	this.game.on('win', function(event) {
 		Anim.shake(document.querySelector('.game-board'), 3);
@@ -145,7 +146,9 @@ View.prototype.update = function(targetBoard) {
 		cellEl.style.left = (cell.x / 4 * 100)+'%';
 		cellEl.style.top  = (cell.y / 4 * 100)+'%';
 	});
-	document.querySelector('.game-score').innerHTML = this.game.score();
+	Array.prototype.forEach.call(document.querySelectorAll('.game-score'), function($el) {
+		$el.innerHTML = this.game.score();
+	}, this);
 };
 
 View.prototype.barageAirhorns = function() {

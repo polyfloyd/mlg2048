@@ -65,7 +65,7 @@
 			<h1>MLG 2048</h1>
 		</div>
 
-		<div class="game game-begin">
+		<div class="game game-state-begin">
 			<div class="game-menu">
 				<h4 class="game-score text-game"></h4>
 				<div class="fb-share-button" data-href="http://game.mlg2048.com/" data-layout="button"></div>
@@ -106,6 +106,12 @@
 				<template class="tmpl-game-cell-2048">
 					<div class="game-cell game-cell-2048"><span></span></div>
 				</template>
+				<div class="game-lose">
+					<h2>You lost <a target="_blank" href="http://textsmili.es">¯\_ツ_/¯</a></h2>
+					<p>Your score was <span class="game-score"></span></p>
+					<p>Think you can do better next time?</p>
+					<a class="game-newgame button" href="#" onclick="location.reload()">New Game</a>
+				</div>
 				<div class="game-board-bg">
 					<span></span>
 					<span></span>
