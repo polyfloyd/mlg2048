@@ -50,7 +50,8 @@ var audio = [
 
 var View = function(game) {
 	this.game = game;
-	this.scoreLerp = 0;
+	this.scoreLerp = 1;
+	this.timeLevel = 0;
 
 	this.update(game.board);
 	this.game.on('move', function(event) {
@@ -113,7 +114,9 @@ var View = function(game) {
 		);
 		glView.on('pre-render', function(event) {
 			this.scoreLerp += Math.sqrt(Math.max(this.game.score() - this.scoreLerp, 0) / 80);
+			this.timeLevel += this.scoreLerp / 1000;
 			glView.gl.uniform1f(glView.uniform('level'), this.scoreLerp / 512);
+			glView.gl.uniform1f(glView.uniform('time_level'), this.timeLevel);
 		}.bind(this));
 	} catch (err) {
 		console.error(err);
