@@ -32,8 +32,9 @@ var Anim = {
 	},
 };
 
-var audio = [
+var Audio = [
 	'airhorn',
+	'damnson',
 	'hitmarker',
 	'momgetthecamera',
 	'ohbabyatriple',
@@ -66,15 +67,9 @@ var View = function(game) {
 		} else if (biggestNew == 128) {
 			this.barageSanic();
 		} else if (biggestNew == 512) {
-			audio.smokeweedeveryday.play();
+			Audio.smokeweedeveryday.play();
 		} else if (biggestNew > 4) {
-			this.showGameText(Rand.pick([
-				'LMAO',
-				'I\'ll rekt u m8',
-				'XD',
-				'sweg',
-				'DAYUM',
-			]), 500);
+			this.barageDefault();
 		}
 
 		event.diff.add.forEach(function(cell, i) {
@@ -91,7 +86,7 @@ var View = function(game) {
 				mark.style.top  = (rect.top  + hy + hy * 0.5 * Rand.uniform())+'px';
 				Anim.show(mark, 500);
 
-				audio.hitmarker.play();
+				Audio.hitmarker.play();
 			}, 100 + 50 * i);
 		});
 
@@ -100,7 +95,7 @@ var View = function(game) {
 		}, 100);
 	}.bind(this));
 	this.game.on('lose', function(event) {
-		audio.sad.play();
+		Audio.sad.play();
 		document.querySelector('.game').classList.add('game-state-lose');
 	}.bind(this));
 	this.game.on('win', function(event) {
@@ -154,11 +149,29 @@ View.prototype.update = function(targetBoard) {
 	}, this);
 };
 
+View.prototype.barageDefault = function() {
+	Rand.bool(0.1) && Audio[Rand.pick([
+		'damnson',
+		'momgetthecamera',
+		'ohbabyatriple',
+		'wow',
+	])].play();
+	this.showGameText(Rand.pick([
+		'DAYUM',
+		'I\'ll rekt u m8',
+		'LMAO',
+		'XD',
+		'sweg',
+		'ur whalecum',
+		'h8tr',
+	]), 500);
+};
+
 View.prototype.barageAirhorns = function() {
 	var anim = document.querySelector('.animations');
 	for (var i = 0; i < 4; i++) {
 		setTimeout(function() {
-			audio.airhorn.play();
+			Audio.airhorn.play();
 
 			var airhorn = elementFromHtml(document.querySelector('.tmpl-anim-airhorn').innerHTML);
 			airhorn.style.top  = (Math.random() * 80 + 10)+'%';
@@ -175,7 +188,7 @@ View.prototype.barageAirhorns = function() {
 };
 
 View.prototype.barageSanic = function() {
-	audio.sanic.play();
+	Audio.sanic.play();
 
 	['such speed', '2fast4me', 'sanic hegehog', 'gtg fast'].map(function(text, i) {
 		setTimeout(function() {

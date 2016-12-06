@@ -23,8 +23,13 @@ var Rand = {
 		return Math.random() * 2 - 1;
 	},
 
+	bool: function(bias) {
+		bias = bias || 0.5;
+		return Math.random() > bias;
+	},
+
 	inv: function() {
-		return Math.random() > 0.5 ? 1 : -1;
+		return this.bool() ? 1 : -1;
 	},
 
 	pick: function(array) {
