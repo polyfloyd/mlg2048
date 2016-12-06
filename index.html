@@ -37,6 +37,7 @@
 		uniform float time;
 		uniform float time_level;
 		uniform float level;
+		uniform float scale;
 		uniform vec2 resolution;
 
 		void main(void) {
@@ -45,7 +46,7 @@
 				resolution.x * .5 + cos(time * 6.) * resolution.x * .25 * center_motion,
 				resolution.y * .5 + sin(time * 2.) * resolution.y * .25 * center_motion
 			);
-			float wave = log(distance(gl_FragCoord.xy, center)) * 8.0;
+			float wave = log(distance(gl_FragCoord.xy / scale, center / scale)) * 8.;
 
 			vec3 normal_color = vec3(
 				cos(wave      - time_level) * .5 + .5,

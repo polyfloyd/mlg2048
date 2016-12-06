@@ -32,6 +32,7 @@ var ShaderView = function(canvas, glsl) {
 	this.canvas = canvas;
 	this.eventListeners = {};
 	this.uniforms = {};
+	this.scale = 1;
 	this.gl = this.getGL();
 
 	this.resize();
@@ -61,9 +62,18 @@ var ShaderView = function(canvas, glsl) {
 	this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(vertices), this.gl.STATIC_DRAW);
 	this.gl.vertexAttribPointer(this.gl.getAttribLocation(this.prog, 'vert'), this.square.itemSize, this.gl.FLOAT, false, 0, 0);
 
+	var prevRenderStart = performance.now() / 1000;
 	var self = this;
 	(function loop() {
 		requestAnimationFrame(function() {
+			var curRenderStart = performance.now() / 1000;
+			var fps = 1 / (curRenderStart - prevRenderStart);
+			if (fps < 10) {
+				self.scale = Math.max(self.scale / 2, 0.03);
+				self.resize();
+			}
+			prevRenderStart = curRenderStart;
+
 			self.render();
 			loop();
 		});
@@ -72,10 +82,10 @@ var ShaderView = function(canvas, glsl) {
 
 ShaderView.prototype.resize = function() {
 	var w = this.canvas.clientWidth, h = this.canvas.clientHeight;
-	this.canvas.width = w;
-	this.canvas.height = h;
+	this.canvas.width = w * this.scale;
+	this.canvas.height = h * this.scale;
 	this.gl.viewport(0, 0, w, h);
-	this.trigger('resize', {width: w, height: h});
+	this.trigger('resize', { width: w, height: h });
 };
 
 ShaderView.prototype.uniform = function(name) {
@@ -97,8 +107,9 @@ ShaderView.prototype.getGL = function() {
 
 ShaderView.prototype.render = function() {
 	this.trigger('pre-render');
-	this.gl.uniform2f(this.uniform('resolution'), this.canvas.width, this.canvas.height);
 	this.gl.uniform1f(this.uniform('time'), performance.now() / 1000);
+	this.gl.uniform1f(this.uniform('scale'), this.scale);
+	this.gl.uniform2f(this.uniform('resolution'), this.canvas.width, this.canvas.height);
 	this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, this.square.numItems);
 };
 
