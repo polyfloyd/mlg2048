@@ -6,13 +6,6 @@
 	<title>MLG 2048</title>
 	<meta name="description" content="2048 BLAZE IT" />
 
-	<!-- CSS -->
-	<link rel="stylesheet" href="lib/normalizecss/normalize.css" />
-	<link rel="stylesheet" href="fonts.css" />
-	<link rel="stylesheet" href="css/style.css" />
-	<link rel="stylesheet" href="css/animations.css" />
-	<link rel="stylesheet" href="css/game.css" />
-
 	<script type="text/javascript">
 		window._paq = window._paq || [];
 		(function() {
@@ -228,16 +221,13 @@
 		</div>
 	</template>
 
-	<!-- JS -->
-	<script type="text/javascript" src="lib/howlerjs/howler.js"></script>
-	<script type="text/javascript" src="lib/hammerjs/hammer.js"></script>
-	<script type="text/javascript" src="js/misc.js"></script>
-	<script type="text/javascript" src="js/game.js"></script>
-	<script type="text/javascript" src="js/shaderview.js"></script>
-	<script type="text/javascript" src="js/view.js"></script>
-	<script type="text/javascript" src="js/main.js"></script>
+	<%
+		htmlWebpackPlugin.files.js.forEach(function(f) {
+			%><script type="text/javascript" src="<%= f %>"></script><%
+		});
+	%>
 
 	<script type="text/javascript" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5" defer async></script>
 	<script type="text/javascript" src="https://platform.twitter.com/widgets.js" defer async></script>
 </body>
-<html>
+</html>

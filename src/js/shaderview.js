@@ -28,7 +28,7 @@ function compileProgram(gl, shaderSources) {
 	return prog;
 }
 
-var ShaderView = function(canvas, glsl) {
+export var ShaderView = function(canvas, glsl) {
 	this.canvas = canvas;
 	this.eventListeners = {};
 	this.uniforms = {};

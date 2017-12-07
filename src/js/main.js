@@ -1,5 +1,15 @@
 'use strict';
 
+import 'normalize.css';
+import '../css/style.css';
+import '../css/game.css';
+import '../css/animations.css';
+
+import * as Hammer from 'hammerjs';
+import { Game } from './game.js';
+import { View } from './view.js';
+
+
 var game = new Game();
 var view = new View(game);
 

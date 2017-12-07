@@ -1,5 +1,20 @@
 'use strict';
 
+import { Howl } from 'howler';
+import * as Misc from './misc.js';
+import * as Random from './random.js';
+import { ShaderView } from './shaderview.js';
+
+import AudioAirhorn from '../audio/airhorn.mp3';
+import AudioDamnson from '../audio/damnson.mp3';
+import AudioHitmarker from '../audio/hitmarker.mp3';
+import AudioMomgetthecamera from '../audio/momgetthecamera.mp3';
+import AudioOhbabyatriple from '../audio/ohbabyatriple.mp3';
+import AudioSad from '../audio/sad.mp3';
+import AudioSanic from '../audio/sanic.mp3';
+import AudioSmokeweedeveryday from '../audio/smokeweedeveryday.mp3';
+import AudioWow from '../audio/wow.mp3';
+
 var Anim = {
 	show: function(elem, duration) {
 		var container = document.querySelector('.animations');
@@ -24,8 +39,8 @@ var Anim = {
 		}
 		var start = performance.now();
 		el.style.transform =
-			'translate('+(Rand.uniform() * intensity * 2)+'vw, '+(Rand.uniform() * intensity * 2)+'vw) '+
-			'rotate('+(Rand.uniform() * intensity * 4)+'deg)';
+			'translate('+(Random.uniform() * intensity * 2)+'vw, '+(Random.uniform() * intensity * 2)+'vw) '+
+			'rotate('+(Random.uniform() * intensity * 4)+'deg)';
 		requestAnimationFrame(function() {
 			Anim.shake(el, intensity - 1 * (performance.now() - start)/1000);
 		});
@@ -33,23 +48,23 @@ var Anim = {
 };
 
 var Audio = [
-	'airhorn',
-	'damnson',
-	'hitmarker',
-	'momgetthecamera',
-	'ohbabyatriple',
-	'sad',
-	'sanic',
-	'smokeweedeveryday',
-	'wow',
-].reduce(function(audio, file) {
-	audio[file] = new Howl({
-		urls: ['audio/'+file+'.mp3'],
+	[ 'airhorn', AudioAirhorn ],
+	[ 'damnson', AudioDamnson ],
+	[ 'hitmarker', AudioHitmarker ],
+	[ 'momgetthecamera', AudioMomgetthecamera ],
+	[ 'ohbabyatriple', AudioOhbabyatriple ],
+	[ 'sad', AudioSad ],
+	[ 'sanic', AudioSanic ],
+	[ 'smokeweeeveryday', AudioSmokeweedeveryday ],
+	[ 'wow', AudioWow ],
+].reduce(function(audio, p) {
+	audio[p[0]] = new Howl({
+		src: [ p[1] ],
 	});
 	return audio;
 }, {});
 
-var View = function(game) {
+export var View = function(game) {
 	this.game = game;
 	this.scoreLerp = 1;
 	this.timeLevel = 0;
@@ -78,12 +93,12 @@ var View = function(game) {
 			}
 			var cellEl = document.getElementById('cell-'+cell.id);
 			setTimeout(function() {
-				var mark = elementFromHtml(document.querySelector('.tmpl-anim-hitmarker').innerHTML);
+				var mark = Misc.elementFromHtml(document.querySelector('.tmpl-anim-hitmarker').innerHTML);
 				var rect = cellEl.getBoundingClientRect();
 				var hx = (rect.right - rect.left) / 2;
 				var hy = (rect.bottom - rect.top) / 2;
-				mark.style.left = (rect.left + hx + hx * 0.5 * Rand.uniform())+'px';
-				mark.style.top  = (rect.top  + hy + hy * 0.5 * Rand.uniform())+'px';
+				mark.style.left = (rect.left + hx + hx * 0.5 * Random.uniform())+'px';
+				mark.style.top  = (rect.top  + hy + hy * 0.5 * Random.uniform())+'px';
 				Anim.show(mark, 500);
 
 				Audio.hitmarker.play();
@@ -127,7 +142,7 @@ View.prototype.update = function(targetBoard) {
 		var cellEl = document.getElementById('cell-'+cell.id);
 		if (!cellEl) {
 			var tmpl = document.querySelector('.tmpl-game-cell-'+(cell.val)).innerHTML;
-			cellEl = elementFromHtml(tmpl);
+			cellEl = Misc.elementFromHtml(tmpl);
 			cellEl.id = 'cell-'+cell.id;
 			document.querySelector('.game-board-cells').appendChild(cellEl);
 
@@ -150,13 +165,13 @@ View.prototype.update = function(targetBoard) {
 };
 
 View.prototype.barageDefault = function() {
-	Rand.bool(0.1) && Audio[Rand.pick([
+	Random.bool(0.1) && Audio[Random.pick([
 		'damnson',
 		'momgetthecamera',
 		'ohbabyatriple',
 		'wow',
 	])].play();
-	this.showGameText(Rand.pick([
+	this.showGameText(Random.pick([
 		'DAYUM',
 		'I\'ll rekt u m8',
 		'LMAO',
@@ -173,14 +188,14 @@ View.prototype.barageAirhorns = function() {
 		setTimeout(function() {
 			Audio.airhorn.play();
 
-			var airhorn = elementFromHtml(document.querySelector('.tmpl-anim-airhorn').innerHTML);
+			var airhorn = Misc.elementFromHtml(document.querySelector('.tmpl-anim-airhorn').innerHTML);
 			airhorn.style.top  = (Math.random() * 80 + 10)+'%';
 			airhorn.style.left = (Math.random() * 80 + 10)+'%';
-			var rotStart = Rand.uniform() * 60;
+			var rotStart = Random.uniform() * 60;
 			var rotEl = airhorn.querySelector('.anim-image');
 			rotEl.style.transform = 'rotate('+rotStart+'deg)';
 			Anim.runTransition(function() {
-				rotEl.style.transform = 'rotate('+(rotStart + Rand.inv() * (30 + 240 * Math.random()))+'deg)';
+				rotEl.style.transform = 'rotate('+(rotStart + Random.inv() * (30 + 240 * Math.random()))+'deg)';
 			});
 			Anim.show(airhorn, 1500);
 		}, 200 * i);
@@ -196,7 +211,7 @@ View.prototype.barageSanic = function() {
 		}.bind(this), 100 + i * 300);
 	}.bind(this));
 
-	var sanic = elementFromHtml(document.querySelector('.tmpl-anim-sanic').innerHTML);
+	var sanic = Misc.elementFromHtml(document.querySelector('.tmpl-anim-sanic').innerHTML);
 	var a = Math.random() * 0.8 + 0.1;
 	var b = Math.random() * 0.8 + 0.1;
 	var cont = document.querySelector('.animations');
@@ -212,10 +227,10 @@ View.prototype.barageSanic = function() {
 };
 
 View.prototype.showGameText = function(text, duration) {
-	var el = elementFromHtml('<span class="anim anim-text text-game"></span>');
+	var el = Misc.elementFromHtml('<span class="anim anim-text text-game"></span>');
 	el.innerHTML = text;
 	el.style.left = (Math.random() * 80 + 10)+'%';
 	el.style.top  = (Math.random() * 80 + 10)+'%';
-	el.style.transform = 'rotate('+(Rand.uniform()*45)+'deg)';
+	el.style.transform = 'rotate('+(Random.uniform()*45)+'deg)';
 	Anim.show(el, duration);
 };

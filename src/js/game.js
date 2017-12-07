@@ -98,7 +98,7 @@ Board.prototype.shift = function() {
 };
 
 
-var Game = function() {
+export var Game = function() {
 	this.board = new Board();
 	this.eventListeners = {};
 
