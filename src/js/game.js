@@ -1,3 +1,7 @@
+import { Observable } from './misc.js';
+import * as Random from './random.js';
+
+
 let _idEnum = 0;
 
 class Board {
@@ -86,93 +90,78 @@ class Board {
 }
 
 
-export var Game = function() {
-	this.board = new Board();
-	this.eventListeners = {};
+export class Game extends Observable {
+	constructor() {
+		super();
+		this.board = new Board();
 
-	// Seed
-	for (var i = 0; i < 2; i++) {
-		var empty = this.board.count(0);
-		var cell = empty[(Math.random() * empty.length) | 0];
-		this.board.grid[cell.y][cell.x] = {val: 2, id: ++_idEnum};
-	}
-};
-
-Game.prototype.on = function(eventName, handler) {
-	var ll = this.eventListeners[eventName] = this.eventListeners[eventName] || [];
-	ll.push(handler);
-};
-
-Game.prototype.trigger = function(eventName, event) {
-	event = event || {};
-	(this.eventListeners[eventName] || []).forEach(function(handler) {
-		handler(event);
-	});
-};
-
-Game.prototype.move = function(dir) {
-	var deg =
-		dir == 'left'  ? 0 :
-		dir == 'up'    ? 90 :
-		dir == 'right' ? 180 :
-		dir == 'down'  ? 270 :
-		-1;
-	if (deg == -1) {
-		throw new Error('Unknown direction "'+dir+'"');
-	}
-	var oldBoard = this.board.clone();
-	this.board = this.board.rotate(deg).shift().rotate(-deg);
-
-	if (oldBoard.equals(this.board)) {
-		return;
-	}
-
-	var newId = ++_idEnum;
-	var empty = this.board.count(0);
-	var cell = empty[(Math.random() * empty.length) | 0];
-	this.board.grid[cell.y][cell.x] = {val: [2, 4][Math.round(Math.random())], id: newId};
-
-	this.trigger('move', {
-		oldBoard: oldBoard,
-		newBoard: this.board,
-		diff: {
-			add: this.board.flat().filter(function(cell) {
-				return !oldBoard.flat().some(function(oldCell) {
-					return cell.id == oldCell.id;
-				});
-			}),
-			rem: oldBoard.flat().filter(function(cell) {
-				return !this.board.flat().some(function(newCell) {
-					return cell.id == newCell.id;
-				});
-			}.bind(this)),
-		},
-	});
-
-	if (this.board.count(0).length === 0) {
-		var movePossible = [0, 90, 180, 270].some(function(deg) {
-			return this.board.rotate(deg).shift().count(0).length > 0;
-		}.bind(this));
-		if (!movePossible) {
-			this.trigger('lose', {
-				score:       this.score(),
-				highestCell: this.board.flat().reduce(function(biggest, cell) {
-					return Math.max(cell.val, biggest);
-				}, 0),
-			});
+		// Seed
+		for (let i = 0; i < 2; i++) {
+			const cell = Random.pick(this.board.count(0));
+			this.board.grid[cell.y][cell.x] = {val: 2, id: ++_idEnum};
 		}
 	}
-	var target = this.board.count(2048);
-	if (target.length) {
-		this.trigger('win');
-	}
-};
 
-Game.prototype.score = function() {
-	return this.board.flat().reduce(function(sum, cell) {
-		if (cell.val <= 2) {
-			return sum;
+	move(dir) {
+		const deg =
+			dir == 'left'  ? 0 :
+			dir == 'up'    ? 90 :
+			dir == 'right' ? 180 :
+			dir == 'down'  ? 270 :
+			-1;
+		if (deg == -1) {
+			throw new Error(`Unknown direction ${dir}`);
 		}
-		return sum + cell.val * Math.log2(cell.val >> 1);
-	}, 0);
-};
+		const oldBoard = this.board.clone();
+		this.board = this.board.rotate(deg)
+			.shift()
+			.rotate(-deg);
+
+		if (oldBoard.equals(this.board)) {
+			return;
+		}
+
+		const cell = Random.pick(this.board.count(0));
+		this.board.grid[cell.y][cell.x] = { val: Random.pick([2, 4]), id: ++_idEnum };
+
+		this.trigger('move', {
+			oldBoard,
+			newBoard: this.board,
+			diff: {
+				add: this.board.flat().filter(cell => {
+					return !oldBoard.flat()
+						.some(oldCell => cell.id == oldCell.id);
+				}),
+				rem: oldBoard.flat().filter(cell => {
+					return !this.board.flat()
+						.some(newCell => cell.id == newCell.id);
+				}),
+			},
+		});
+
+		if (!this.board.count(0).length) {
+			const movePossible = [0, 90, 180, 270]
+				.some(deg => this.board.rotate(deg)
+					.shift()
+					.count(0)
+					.length > 0);
+			if (!movePossible) {
+				this.trigger('lose', {
+					score:       this.score(),
+					highestCell: this.board.flat()
+						.reduce((biggest, cell) => Math.max(cell.val, biggest), 0),
+				});
+			}
+		}
+
+		if (this.board.count(2048).length) {
+			this.trigger('win');
+		}
+	}
+
+	score() {
+		return this.board.flat()
+			.filter(cell => cell.val > 2)
+			.reduce((sum, cell) => sum + cell.val * Math.log2(cell.val >> 1), 0);
+	}
+}
