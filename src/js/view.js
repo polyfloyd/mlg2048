@@ -5,6 +5,8 @@ import * as Misc from './misc.js';
 import * as Random from './random.js';
 import { ShaderView } from './shaderview.js';
 
+import BackgroundShader from '../shader/background.frag.glsl';
+
 import AudioAirhorn from '../audio/airhorn.mp3';
 import AudioDamnson from '../audio/damnson.mp3';
 import AudioHitmarker from '../audio/hitmarker.mp3';
@@ -118,10 +120,8 @@ export var View = function(game) {
 	}.bind(this));
 
 	try {
-		var glView = new ShaderView(
-			document.querySelector('.gl-background'),
-			document.querySelector('.background-shader').innerHTML
-		);
+		var el = document.querySelector('.gl-background');
+		var glView = new ShaderView(el, BackgroundShader);
 		glView.on('pre-render', function(event) {
 			this.scoreLerp += Math.sqrt(Math.max(this.game.score() - this.scoreLerp, 0) / 80);
 			this.timeLevel += this.scoreLerp / 1000;
