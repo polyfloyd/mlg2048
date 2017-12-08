@@ -221,12 +221,6 @@
 		</div>
 	</template>
 
-	<%
-		htmlWebpackPlugin.files.js.forEach(function(f) {
-			%><script type="text/javascript" src="<%= f %>"></script><%
-		});
-	%>
-
 	<script type="text/javascript" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5" defer async></script>
 	<script type="text/javascript" src="https://platform.twitter.com/widgets.js" defer async></script>
 </body>
