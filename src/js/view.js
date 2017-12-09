@@ -1,5 +1,3 @@
-'use strict';
-
 import { Howl } from 'howler';
 import * as Misc from './misc.js';
 import * as Random from './random.js';
@@ -7,230 +5,234 @@ import { ShaderView } from './shaderview.js';
 
 import BackgroundShader from '../shader/background.frag.glsl';
 
-import AudioAirhorn from '../audio/airhorn.mp3';
-import AudioDamnson from '../audio/damnson.mp3';
-import AudioHitmarker from '../audio/hitmarker.mp3';
-import AudioMomgetthecamera from '../audio/momgetthecamera.mp3';
-import AudioOhbabyatriple from '../audio/ohbabyatriple.mp3';
-import AudioSad from '../audio/sad.mp3';
-import AudioSanic from '../audio/sanic.mp3';
-import AudioSmokeweedeveryday from '../audio/smokeweedeveryday.mp3';
-import AudioWow from '../audio/wow.mp3';
+import AudioSrcAirhorn from '../audio/airhorn.mp3';
+import AudioSrcDamnson from '../audio/damnson.mp3';
+import AudioSrcHitmarker from '../audio/hitmarker.mp3';
+import AudioSrcMomgetthecamera from '../audio/momgetthecamera.mp3';
+import AudioSrcOhbabyatriple from '../audio/ohbabyatriple.mp3';
+import AudioSrcSad from '../audio/sad.mp3';
+import AudioSrcSanic from '../audio/sanic.mp3';
+import AudioSrcSmokeweedeveryday from '../audio/smokeweedeveryday.mp3';
+import AudioSrcWow from '../audio/wow.mp3';
 
-var Anim = {
-	show: function(elem, duration) {
-		var container = document.querySelector('.animations');
-		container.appendChild(elem);
-		setTimeout(function() {
-			container.removeChild(elem);
-		}, duration);
-	},
 
-	runTransition: function(cb) {
-		requestAnimationFrame(function() {
-			requestAnimationFrame(function() {
-				cb();
-			});
-		});
-	},
-
-	shake: function(el, intensity) {
-		if (intensity <= 0) {
-			el.style.transform = '';
-			return;
-		}
-		var start = performance.now();
-		el.style.transform =
-			'translate('+(Random.uniform() * intensity * 2)+'vw, '+(Random.uniform() * intensity * 2)+'vw) '+
-			'rotate('+(Random.uniform() * intensity * 4)+'deg)';
-		requestAnimationFrame(function() {
-			Anim.shake(el, intensity - 1 * (performance.now() - start)/1000);
-		});
-	},
-};
-
-var Audio = [
-	[ 'airhorn', AudioAirhorn ],
-	[ 'damnson', AudioDamnson ],
-	[ 'hitmarker', AudioHitmarker ],
-	[ 'momgetthecamera', AudioMomgetthecamera ],
-	[ 'ohbabyatriple', AudioOhbabyatriple ],
-	[ 'sad', AudioSad ],
-	[ 'sanic', AudioSanic ],
-	[ 'smokeweeeveryday', AudioSmokeweedeveryday ],
-	[ 'wow', AudioWow ],
-].reduce(function(audio, p) {
-	audio[p[0]] = new Howl({
-		src: [ p[1] ],
-	});
+const Audio = [
+	[ 'airhorn', AudioSrcAirhorn ],
+	[ 'damnson', AudioSrcDamnson ],
+	[ 'hitmarker', AudioSrcHitmarker ],
+	[ 'momgetthecamera', AudioSrcMomgetthecamera ],
+	[ 'ohbabyatriple', AudioSrcOhbabyatriple ],
+	[ 'sad', AudioSrcSad ],
+	[ 'sanic', AudioSrcSanic ],
+	[ 'smokeweeeveryday', AudioSrcSmokeweedeveryday ],
+	[ 'wow', AudioSrcWow ],
+].reduce((audio, [ name, src ]) => {
+	audio[name] = new Howl({ src: [ src ] });
 	return audio;
 }, {});
 
-export var View = function(game) {
-	this.game = game;
-	this.scoreLerp = 1;
-	this.timeLevel = 0;
+const Anim = {
+	async show(elem, duration) {
+		let container = document.querySelector('.animations');
+		container.appendChild(elem);
+		await Misc.sleep(duration);
+		container.removeChild(elem);
+	},
 
-	this.update(game.board);
-	this.game.on('move', function(event) {
-		document.querySelector('.game').classList.remove('game-state-begin');
-		this.update(event.newBoard);
+	// Waits for any DOM elements previously added to be styled.
+	async prepareTransition() {
+		await Misc.animationFrame();
+		await Misc.animationFrame();
+	},
 
-		var biggestNew = event.diff.add.reduce(function(biggest, cell) {
-			return Math.max(biggest, cell.val);
-		}, 0);
-		if (biggestNew == 32) {
-			this.barageAirhorns();
-		} else if (biggestNew == 128) {
-			this.barageSanic();
-		} else if (biggestNew == 512) {
-			Audio.smokeweedeveryday.play();
-		} else if (biggestNew > 4) {
-			this.barageDefault();
+	async shake(el, intensity) {
+		while (intensity > 0) {
+			const transX = Random.uniform() * intensity * 2;
+			const transY = Random.uniform() * intensity * 2;
+			const rot = Random.uniform() * intensity * 4;
+			el.style.transform = `translate(${transX}vw, ${transY}vw) rotate(${rot}deg)`;
+
+			const start = performance.now();
+			await Misc.animationFrame();
+			intensity = intensity - (performance.now() - start) / 1000;
 		}
+		el.style.transform = '';
+	},
 
-		event.diff.add.forEach(function(cell, i) {
-			if (!cell.merged) {
-				return;
+	showGameText(text, duration) {
+		let el = Misc.elementFromHtml(`
+			<span class="anim anim-text text-game">${text}</span>
+		`);
+		el.style.left = (Math.random() * 80 + 10)+'%';
+		el.style.top  = (Math.random() * 80 + 10)+'%';
+		el.style.transform = `rotate(${Random.uniform()*45}deg)`;
+		Anim.show(el, duration);
+	}
+};
+
+
+export class View {
+	constructor(game) {
+		this.game = game;
+		this.scoreLerp = 1;
+		this.timeLevel = 0;
+
+		this.update(game.board);
+		this.game.on('move', event => {
+			document.querySelector('.game').classList.remove('game-state-begin');
+			this.update(event.newBoard);
+
+			const biggestNew = event.diff.add
+				.reduce((biggest, cell) => Math.max(biggest, cell.val), 0);
+			if (biggestNew == 32) {
+				Barage.airhorns();
+			} else if (biggestNew == 128) {
+				Barage.sanic();
+			} else if (biggestNew == 512) {
+				Audio.smokeweedeveryday.play();
+			} else if (biggestNew > 4) {
+				Barage.default();
 			}
-			var cellEl = document.getElementById('cell-'+cell.id);
-			setTimeout(function() {
-				var mark = Misc.elementFromHtml(document.querySelector('.tmpl-anim-hitmarker').innerHTML);
-				var rect = cellEl.getBoundingClientRect();
-				var hx = (rect.right - rect.left) / 2;
-				var hy = (rect.bottom - rect.top) / 2;
-				mark.style.left = (rect.left + hx + hx * 0.5 * Random.uniform())+'px';
-				mark.style.top  = (rect.top  + hy + hy * 0.5 * Random.uniform())+'px';
-				Anim.show(mark, 500);
 
-				Audio.hitmarker.play();
-			}, 100 + 50 * i);
+			event.diff.add
+				.filter(cell => cell.merged)
+				.forEach((cell, i) => {
+					const cellEl = document.getElementById('cell-'+cell.id);
+					setTimeout(() => {
+						let mark = Misc.elementFromHtml(`
+							<div class="anim anim-hitmarker anim-image"></div>
+						`);
+						const rect = cellEl.getBoundingClientRect();
+						const hx = (rect.right - rect.left) / 2;
+						const hy = (rect.bottom - rect.top) / 2;
+						mark.style.left = (rect.left + hx + hx * 0.5 * Random.uniform())+'px';
+						mark.style.top  = (rect.top  + hy + hy * 0.5 * Random.uniform())+'px';
+						Anim.show(mark, 500);
+
+						Audio.hitmarker.play();
+					}, 100 + 50 * i);
+				});
+
+			setTimeout(() => {
+				Anim.shake(document.querySelector('.game-board'), event.diff.add.length / 6);
+			}, 100);
+		});
+		this.game.on('lose', event => {
+			Audio.sad.play();
+			document.querySelector('.game').classList.add('game-state-lose');
+		});
+		this.game.on('win', event => {
+			Anim.shake(document.querySelector('.game-board'), 3);
 		});
 
-		setTimeout(function() {
-			Anim.shake(document.querySelector('.game-board'), event.diff.add.length / 6);
-		}, 100);
-	}.bind(this));
-	this.game.on('lose', function(event) {
-		Audio.sad.play();
-		document.querySelector('.game').classList.add('game-state-lose');
-	}.bind(this));
-	this.game.on('win', function(event) {
-		Anim.shake(document.querySelector('.game-board'), 3);
-	}.bind(this));
-
-	try {
-		var el = document.querySelector('.gl-background');
-		var glView = new ShaderView(el, BackgroundShader);
-		glView.on('pre-render', function(event) {
-			this.scoreLerp += Math.sqrt(Math.max(this.game.score() - this.scoreLerp, 0) / 80);
-			this.timeLevel += this.scoreLerp / 1000;
-			glView.gl.uniform1f(glView.uniform('level'), this.scoreLerp / 512);
-			glView.gl.uniform1f(glView.uniform('time_level'), this.timeLevel);
-		}.bind(this));
-	} catch (err) {
-		console.error(err);
-	}
-};
-
-View.prototype.update = function(targetBoard) {
-	var flatBoard = targetBoard.flat();
-	flatBoard.forEach(function(cell, i) {
-		if (cell.val == 0) {
-			return;
-		}
-		var cellEl = document.getElementById('cell-'+cell.id);
-		if (!cellEl) {
-			var tmpl = document.querySelector('.tmpl-game-cell-'+(cell.val)).innerHTML;
-			cellEl = Misc.elementFromHtml(tmpl);
-			cellEl.id = 'cell-'+cell.id;
-			document.querySelector('.game-board-cells').appendChild(cellEl);
-
-			(cell.merged || []).forEach(function(id) {
-				var oldCellEl = document.getElementById('cell-'+id);
-				oldCellEl.style.left = (cell.x * 25)+'%';
-				oldCellEl.style.top  = (cell.y * 25)+'%';
-				oldCellEl.classList.add('fade-out');
-				setTimeout(function() {
-					oldCellEl.parentNode.removeChild(oldCellEl);
-				}, 200);
+		try {
+			const el = document.querySelector('.gl-background');
+			let glView = new ShaderView(el, BackgroundShader);
+			glView.on('pre-render', event => {
+				this.scoreLerp += Math.sqrt(Math.max(this.game.score() - this.scoreLerp, 0) / 80);
+				this.timeLevel += this.scoreLerp / 1000;
+				glView.gl.uniform1f(glView.uniform('level'), this.scoreLerp / 512);
+				glView.gl.uniform1f(glView.uniform('time_level'), this.timeLevel);
 			});
+		} catch (err) {
+			console.error(err.message);
 		}
-		cellEl.style.left = (cell.x / 4 * 100)+'%';
-		cellEl.style.top  = (cell.y / 4 * 100)+'%';
-	});
-	Array.prototype.forEach.call(document.querySelectorAll('.game-score'), function($el) {
-		$el.innerHTML = this.game.score();
-	}, this);
-};
-
-View.prototype.barageDefault = function() {
-	Random.bool(0.1) && Audio[Random.pick([
-		'damnson',
-		'momgetthecamera',
-		'ohbabyatriple',
-		'wow',
-	])].play();
-	this.showGameText(Random.pick([
-		'DAYUM',
-		'I\'ll rekt u m8',
-		'LMAO',
-		'XD',
-		'sweg',
-		'ur whalecum',
-		'h8tr',
-	]), 500);
-};
-
-View.prototype.barageAirhorns = function() {
-	var anim = document.querySelector('.animations');
-	for (var i = 0; i < 4; i++) {
-		setTimeout(function() {
-			Audio.airhorn.play();
-
-			var airhorn = Misc.elementFromHtml(document.querySelector('.tmpl-anim-airhorn').innerHTML);
-			airhorn.style.top  = (Math.random() * 80 + 10)+'%';
-			airhorn.style.left = (Math.random() * 80 + 10)+'%';
-			var rotStart = Random.uniform() * 60;
-			var rotEl = airhorn.querySelector('.anim-image');
-			rotEl.style.transform = 'rotate('+rotStart+'deg)';
-			Anim.runTransition(function() {
-				rotEl.style.transform = 'rotate('+(rotStart + Random.inv() * (30 + 240 * Math.random()))+'deg)';
-			});
-			Anim.show(airhorn, 1500);
-		}, 200 * i);
 	}
-};
 
-View.prototype.barageSanic = function() {
-	Audio.sanic.play();
+	update(targetBoard) {
+		targetBoard.flat()
+			.filter(cell => cell.val > 0)
+			.forEach((cell, i) => {
+				let cellEl = document.getElementById('cell-'+cell.id);
+				if (!cellEl) {
+					cellEl = Misc.elementFromHtml(`
+						<div class="game-cell game-cell-${cell.val}"><span></span></div>
+					`);
+					cellEl.id = 'cell-'+cell.id;
+					document.querySelector('.game-board-cells').appendChild(cellEl);
 
-	['such speed', '2fast4me', 'sanic hegehog', 'gtg fast'].map(function(text, i) {
-		setTimeout(function() {
-			this.showGameText(text, 500);
-		}.bind(this), 100 + i * 300);
-	}.bind(this));
+					(cell.merged || []).forEach(id => {
+						let oldCellEl = document.getElementById('cell-'+id);
+						oldCellEl.style.left = (cell.x * 25)+'%';
+						oldCellEl.style.top  = (cell.y * 25)+'%';
+						oldCellEl.classList.add('fade-out');
+						setTimeout(() => oldCellEl.parentNode.removeChild(oldCellEl), 200);
+					});
+				}
+				cellEl.style.left = (cell.x / 4 * 100)+'%';
+				cellEl.style.top  = (cell.y / 4 * 100)+'%';
+			});
+		Array.prototype.forEach.call(document.querySelectorAll('.game-score'), $el => {
+			$el.innerHTML = this.game.score();
+		}, this);
+	}
+}
 
-	var sanic = Misc.elementFromHtml(document.querySelector('.tmpl-anim-sanic').innerHTML);
-	var a = Math.random() * 0.8 + 0.1;
-	var b = Math.random() * 0.8 + 0.1;
-	var cont = document.querySelector('.animations');
-	var angrad = Math.atan2(cont.clientWidth, cont.clientHeight * (a - b)) - Math.PI/2;
-	sanic.querySelector('.anim-image').style.transform = 'rotate('+angrad+'rad)';
-	sanic.style.left = '-300px';
-	sanic.style.top  = (a * 100)+'%';
-	Anim.runTransition(function() {
+const Barage = {
+	default() {
+		Random.bool(0.1) && Audio[Random.pick([
+			'damnson',
+			'momgetthecamera',
+			'ohbabyatriple',
+			'wow',
+		])].play();
+		Anim.showGameText(Random.pick([
+			'DAYUM',
+			'I\'ll rekt u m8',
+			'LMAO',
+			'XD',
+			'sweg',
+			'ur whalecum',
+			'h8tr',
+		]), 500);
+	},
+
+	airhorns() {
+		for (let i = 0; i < 4; i++) {
+			setTimeout(async () => {
+				Audio.airhorn.play();
+
+				let airhorn = Misc.elementFromHtml(`
+					<div class="anim anim-airhorn">
+						<div class="anim-image"></div>
+					</div>
+				`);
+				airhorn.style.top  = (Math.random() * 80 + 10)+'%';
+				airhorn.style.left = (Math.random() * 80 + 10)+'%';
+				const rotStart = Random.uniform() * 60;
+				let rotEl = airhorn.querySelector('.anim-image');
+				rotEl.style.transform = `rotate(${rotStart}deg)`;
+				Anim.show(airhorn, 1500);
+				await Anim.prepareTransition();
+				const rotEnd = rotStart + Random.inv() * (30 + 240 * Math.random());
+				rotEl.style.transform = `rotate(${rotEnd}deg)`;
+			}, 200 * i);
+		}
+	},
+
+	async sanic() {
+		Audio.sanic.play();
+
+		['such speed', '2fast4me', 'sanic hegehog', 'gtg fast']
+			.forEach((text, i) => {
+				setTimeout(() => Anim.showGameText(text, 500), 100 + i * 300);
+			});
+
+		let sanic = Misc.elementFromHtml(`
+			<div class="anim anim-sanic">
+				<div class="anim-image"></div>
+			</div>
+		`);
+		const a = Math.random() * 0.8 + 0.1;
+		const b = Math.random() * 0.8 + 0.1;
+		const cont = document.querySelector('.animations');
+		const angrad = Math.atan2(cont.clientWidth, cont.clientHeight * (a - b)) - Math.PI/2;
+		sanic.querySelector('.anim-image').style.transform = `rotate(${angrad}rad)`;
+		sanic.style.left = '-300px';
+		sanic.style.top  = (a * 100)+'%';
+		Anim.show(sanic, 2000);
+		await Anim.prepareTransition();
 		sanic.style.top  = (b * 100)+'%';
 		sanic.style.left = 'calc(100% + 300px)';
-	});
-	Anim.show(sanic, 2000);
-};
-
-View.prototype.showGameText = function(text, duration) {
-	var el = Misc.elementFromHtml('<span class="anim anim-text text-game"></span>');
-	el.innerHTML = text;
-	el.style.left = (Math.random() * 80 + 10)+'%';
-	el.style.top  = (Math.random() * 80 + 10)+'%';
-	el.style.transform = 'rotate('+(Random.uniform()*45)+'deg)';
-	Anim.show(el, duration);
-};
+	},
+}

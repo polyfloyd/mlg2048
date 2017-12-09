@@ -8,6 +8,18 @@ if (!performance.now) {
 	}, 10);
 }
 
+export async function sleep(ms) {
+	return new Promise((resolve, reject) => {
+		setTimeout(resolve, ms);
+	});
+}
+
+export async function animationFrame(ms) {
+	return new Promise((resolve, reject) => {
+		requestAnimationFrame(resolve);
+	});
+}
+
 export function elementFromHtml(html) {
 	let div = document.createElement('div');
 	div.innerHTML = html;
