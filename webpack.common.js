@@ -11,9 +11,8 @@ module.exports = {
         filename: '[name].bundle.js',
         publicPath: '/',
     },
-    devtool: 'inline-source-map',
     plugins: [
-        new CleanWebpackPlugin(['dist']),
+        new CleanWebpackPlugin(['./dist']),
         new HtmlWebpackPlugin({
             template: 'src/index.html',
             inlineSource: '.(js|css)$',
@@ -21,35 +20,35 @@ module.exports = {
         new HtmlWebpackInlineSourcePlugin(),
         new ExtractTextPlugin("style.css"),
     ],
-    devServer: {
-        contentBase: './dist'
-    },
     module: {
         rules: [
             {
                 test: /\.js$/,
                 exclude: path.resolve(__dirname, './node_modules'),
                 loader: 'babel-loader',
+                options: {
+                    presets: [ 'babel-preset-env' ],
+                },
             },
             {
                 test: /\.css$/,
                 use: ExtractTextPlugin.extract({
                     fallback: "style-loader",
-                    use: "css-loader"
+                    use: "css-loader",
                 }),
             },
             {
                 test: /\.(png|svg|jpg|gif|mp3)$/,
-                use: 'file-loader'
+                use: 'file-loader',
             },
             {
                 test: /\.(woff|woff2|eot|ttf|otf)$/,
-                use: 'file-loader'
+                use: 'file-loader',
             },
             {
                 test: /\.glsl/,
-                use: 'raw-loader'
-            }
+                use: 'raw-loader',
+            },
         ]
     }
 };
