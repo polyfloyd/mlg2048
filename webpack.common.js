@@ -31,10 +31,13 @@ module.exports = {
                 },
             },
             {
-                test: /\.css$/,
+                test: /\.s?css$/,
                 use: ExtractTextPlugin.extract({
-                    fallback: "style-loader",
-                    use: "css-loader",
+                    fallback: 'style-loader',
+                    use: [
+                        'css-loader',
+                        'sass-loader',
+                    ],
                 }),
             },
             {

@@ -1,9 +1,9 @@
 'use strict';
 
 import 'normalize.css';
-import '../css/style.css';
-import '../css/game.css';
-import '../css/animations.css';
+import '../style/style.scss';
+import '../style/game.scss';
+import '../style/animations.scss';
 
 import * as Hammer from 'hammerjs';
 import { Game } from './game.js';
