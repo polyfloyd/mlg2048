@@ -1,6 +1,8 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     entry: './src/js/main.js',
@@ -13,8 +15,11 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin(['dist']),
         new HtmlWebpackPlugin({
-            template: 'src/index.html'
-        })
+            template: 'src/index.html',
+            inlineSource: '.(js|css)$',
+        }),
+        new HtmlWebpackInlineSourcePlugin(),
+        new ExtractTextPlugin("style.css"),
     ],
     devServer: {
         contentBase: './dist'
@@ -28,7 +33,10 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: [ 'style-loader', 'css-loader' ],
+                use: ExtractTextPlugin.extract({
+                    fallback: "style-loader",
+                    use: "css-loader"
+                }),
             },
             {
                 test: /\.(png|svg|jpg|gif|mp3)$/,
