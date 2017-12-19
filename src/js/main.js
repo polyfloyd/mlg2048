@@ -1,5 +1,7 @@
 'use strict';
 
+import "babel-polyfill";
+
 import 'normalize.css';
 import '../style/style.scss';
 import '../style/game.scss';
