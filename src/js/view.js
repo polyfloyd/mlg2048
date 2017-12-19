@@ -213,26 +213,30 @@ const Barage = {
 	async sanic() {
 		Audio.sanic.play();
 
-		['such speed', '2fast4me', 'sanic hegehog', 'gtg fast']
+		['such speed', '2fast4me', 'sanic hegehog', 'gtg fast', 'catch me m8']
 			.forEach((text, i) => {
 				setTimeout(() => Anim.showGameText(text, 500), 100 + i * 300);
 			});
 
-		let sanic = Misc.elementFromHtml(`
-			<div class="anim anim-sanic">
-				<div class="anim-image"></div>
-			</div>
-		`);
-		const a = Math.random() * 0.8 + 0.1;
-		const b = Math.random() * 0.8 + 0.1;
-		const cont = document.querySelector('.animations');
-		const angrad = Math.atan2(cont.clientWidth, cont.clientHeight * (a - b)) - Math.PI/2;
-		sanic.querySelector('.anim-image').style.transform = `rotate(${angrad}rad)`;
-		sanic.style.left = '-300px';
-		sanic.style.top  = (a * 100)+'%';
-		Anim.show(sanic, 2000);
-		await Anim.prepareTransition();
-		sanic.style.top  = (b * 100)+'%';
-		sanic.style.left = 'calc(100% + 300px)';
+		for (let i = 0; i < 6; i++) {
+			setTimeout(async () => {
+				let sanic = Misc.elementFromHtml(`
+					<div class="anim anim-sanic">
+						<div class="anim-image"></div>
+					</div>
+				`);
+				const a = Math.random() * 0.8 + 0.1;
+				const b = Math.random() * 0.8 + 0.1;
+				const cont = document.querySelector('.animations');
+				const angrad = Math.atan2(cont.clientWidth, cont.clientHeight * (a - b)) - Math.PI/2;
+				sanic.querySelector('.anim-image').style.transform = `rotate(${angrad}rad)`;
+				sanic.style.left = '-300px';
+				sanic.style.top  = `${a * 100}%`;
+				Anim.show(sanic, 2000);
+				await Anim.prepareTransition();
+				sanic.style.top  = `${b * 100}%`;
+				sanic.style.left = 'calc(100% + 300px)';
+			}, 300 * i);
+		}
 	},
-}
+};
