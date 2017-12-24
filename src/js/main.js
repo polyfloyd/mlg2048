@@ -7,7 +7,7 @@ import '../style/style.scss';
 import '../style/game.scss';
 import '../style/animations.scss';
 
-import * as Hammer from 'hammerjs';
+import { default as Hammer } from 'hammerjs';
 import { Game } from './game.js';
 import * as Misc from './misc.js';
 import { View } from './view.js';
