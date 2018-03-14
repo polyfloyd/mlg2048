@@ -1,0 +1,6 @@
+*.swo
+*.swp
+
+.git
+dist
+node_modules
