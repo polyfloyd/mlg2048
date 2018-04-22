@@ -1,8 +1,10 @@
 FROM node:carbon AS builder
 
 WORKDIR /etc/mlg2048
-ADD . .
+ADD ./package.json ./
+ADD ./package-lock.json ./
 RUN npm install
+ADD . .
 RUN npm run build
 
 
