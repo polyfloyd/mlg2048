@@ -1,5 +1,4 @@
 const path = require('path');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -12,7 +11,6 @@ module.exports = {
         publicPath: '/',
     },
     plugins: [
-        new CleanWebpackPlugin(['./dist']),
         new HtmlWebpackPlugin({
             template: 'src/index.html',
             inlineSource: '.(js|css)$',
