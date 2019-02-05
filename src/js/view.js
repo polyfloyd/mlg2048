@@ -130,7 +130,7 @@ export class View {
 			let glView = new ShaderView(el, BackgroundShader);
 			glView.on('pre-render', event => {
 				this.scoreLerp += Math.sqrt(Math.max(this.game.score() - this.scoreLerp, 0) / 80);
-				this.timeLevel += this.scoreLerp / 1000;
+				this.timeLevel += Math.min(this.scoreLerp / 1000, 0.5);
 				glView.gl.uniform1f(glView.uniform('level'), this.scoreLerp / 512);
 				glView.gl.uniform1f(glView.uniform('time_level'), this.timeLevel);
 			});

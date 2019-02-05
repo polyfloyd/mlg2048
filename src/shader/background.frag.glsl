@@ -25,4 +25,3 @@ void main(void) {
 
 	gl_FragColor = vec4(mix(normal_color, flip_color, step(.8, level) * (cos(time * 8.) * .5 + .5)), 1.);
 }
-
