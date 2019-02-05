@@ -1,6 +1,6 @@
 'use strict';
 
-import "babel-polyfill";
+import "@babel/polyfill";
 
 import 'normalize.css';
 import '../style/style.scss';
