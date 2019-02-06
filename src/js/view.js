@@ -120,6 +120,15 @@ export class View {
 		this.game.on('lose', event => {
 			Audio.sad.play();
 			document.querySelector('.game').classList.add('game-state-lose');
+
+			const score = this.game.score();
+			var tier =
+				score < 400  ? 0 :
+				score < 800  ? 1 :
+				score < 1600 ? 2 :
+				3;
+			const texts = document.querySelectorAll(`.lose-tier-${tier}`)
+			Random.pick(texts).classList.remove('lose-text');
 		});
 		this.game.on('win', event => {
 			Anim.shake(document.querySelector('.game-board'), 3);
