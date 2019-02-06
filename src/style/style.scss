@@ -116,11 +116,11 @@ footer {
 	font-weight: bold;
 	background-color: #fff;
 	cursor: pointer;
-	transition: bottom 0.4s;
+	transition: top 0.4s;
 }
 
 .epilepsy-warning.hide {
-	bottom: calc(-4em);
+	top: calc(-4em);
 }
 
 .cc-revoke, .cc-window {
