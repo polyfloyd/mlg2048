@@ -223,26 +223,31 @@
 .game-cell-128 > span:before {
 	content: "128";
 	font-size: 6vmin;
+	animation: anim-vibrate 0.08s infinite;
 }
 
 .game-cell-256 > span:before {
 	content: "256";
 	font-size: 6vmin;
+	animation: anim-vibrate 0.08s infinite;
 }
 
 .game-cell-512 > span:before {
 	content: "420";
 	font-size: 6vmin;
+	animation: anim-vibrate 0.08s infinite;
 }
 
 .game-cell-1024 > span:before {
 	content: "1024";
 	font-size: 4vmin;
+	animation: anim-vibrate 0.08s infinite;
 }
 
 .game-cell-2048 > span:before {
 	content: "2048";
 	font-size: 4vmin;
+	animation: anim-vibrate 0.08s infinite;
 }
 
 @keyframes col-eyecancer {
