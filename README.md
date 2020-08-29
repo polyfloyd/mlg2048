@@ -1,7 +1,8 @@
 MLG 2048
 ========
 
-2048 BLAZE IT
+I made this website for the [Eth0](https://wiki.eth0.nl/index.php/Main_Page)
+party back in 2016 as a joke.
 
 ```
 # Release:
