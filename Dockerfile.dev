@@ -1,11 +1,11 @@
-FROM node:carbon
+FROM node:17
 
 WORKDIR /etc/mlg2048
 ADD ./package.json ./
 ADD ./package-lock.json ./
+RUN npm install ./
 ADD webpack.common.js ./
 ADD webpack.dev.js ./
-RUN npm install ./
 VOLUME /etc/mlg2048/src
 
 EXPOSE 80
